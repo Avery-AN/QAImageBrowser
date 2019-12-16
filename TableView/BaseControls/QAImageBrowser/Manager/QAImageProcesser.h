@@ -1,5 +1,5 @@
 //
-//  ImageProcesser.h
+//  QAImageProcesser.h
 //  TableView
 //
 //  Created by Avery An on 2019/12/2.
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ImageProcesser : NSObject
+@interface QAImageProcesser : NSObject
 
 + (CGRect)caculateOriginImageSize:(UIImage *)image;
 

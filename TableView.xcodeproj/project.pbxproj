@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB2FF43623A738820033F1D6 /* QAImageBroeserDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2FF43523A738820033F1D6 /* QAImageBroeserDownloadManager.m */; };
 		BB48B567239F431D005D53A3 /* QAImageBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48B566239F431D005D53A3 /* QAImageBrowserCell.m */; };
 		BB48B56A239F434A005D53A3 /* QAImageBrowserLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48B569239F434A005D53A3 /* QAImageBrowserLayout.m */; };
 		BB58E08A238B7CD0005C4EA9 /* emoji偷笑@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB58E086238B7CD0005C4EA9 /* emoji偷笑@2x.png */; };
@@ -18,7 +19,7 @@
 		BB7BECD823925B0000688028 /* 默认图@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB7BECD623925B0000688028 /* 默认图@2x.png */; };
 		BB7BECE42394F6D400688028 /* AdvancedDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7BECE32394F6D400688028 /* AdvancedDataManager.m */; };
 		BB7BECE72394F81200688028 /* ScratchablelatexDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7BECE62394F81200688028 /* ScratchablelatexDataManager.m */; };
-		BB7BECEA2395022D00688028 /* ImageProcesser.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7BECE92395022D00688028 /* ImageProcesser.m */; };
+		BB7BECEA2395022D00688028 /* QAImageProcesser.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7BECE92395022D00688028 /* QAImageProcesser.m */; };
 		BB7BECEC23965C2D00688028 /* demo.GIF in Resources */ = {isa = PBXBuildFile; fileRef = BB7BECEB23965C2D00688028 /* demo.GIF */; };
 		BB9F6C0A23838A7000F05116 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9F6C0923838A7000F05116 /* AppDelegate.m */; };
 		BB9F6C1523838A7200F05116 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB9F6C1423838A7200F05116 /* Assets.xcassets */; };
@@ -67,6 +68,8 @@
 /* Begin PBXFileReference section */
 		175F2055E5583335E94BE624 /* Pods_TableView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TableView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62D176DA0D2F114333645CB8 /* Pods-TableView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TableView.debug.xcconfig"; path = "Target Support Files/Pods-TableView/Pods-TableView.debug.xcconfig"; sourceTree = "<group>"; };
+		BB2FF43423A738820033F1D6 /* QAImageBroeserDownloadManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QAImageBroeserDownloadManager.h; sourceTree = "<group>"; };
+		BB2FF43523A738820033F1D6 /* QAImageBroeserDownloadManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QAImageBroeserDownloadManager.m; sourceTree = "<group>"; };
 		BB48B565239F431D005D53A3 /* QAImageBrowserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QAImageBrowserCell.h; sourceTree = "<group>"; };
 		BB48B566239F431D005D53A3 /* QAImageBrowserCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QAImageBrowserCell.m; sourceTree = "<group>"; };
 		BB48B568239F434A005D53A3 /* QAImageBrowserLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QAImageBrowserLayout.h; sourceTree = "<group>"; };
@@ -83,11 +86,11 @@
 		BB7BECE32394F6D400688028 /* AdvancedDataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AdvancedDataManager.m; sourceTree = "<group>"; };
 		BB7BECE52394F81200688028 /* ScratchablelatexDataManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScratchablelatexDataManager.h; sourceTree = "<group>"; };
 		BB7BECE62394F81200688028 /* ScratchablelatexDataManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScratchablelatexDataManager.m; sourceTree = "<group>"; };
-		BB7BECE82395022D00688028 /* ImageProcesser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageProcesser.h; sourceTree = "<group>"; };
-		BB7BECE92395022D00688028 /* ImageProcesser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageProcesser.m; sourceTree = "<group>"; };
+		BB7BECE82395022D00688028 /* QAImageProcesser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QAImageProcesser.h; sourceTree = "<group>"; };
+		BB7BECE92395022D00688028 /* QAImageProcesser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QAImageProcesser.m; sourceTree = "<group>"; };
 		BB7BECEB23965C2D00688028 /* demo.GIF */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = demo.GIF; sourceTree = "<group>"; };
 		BB97A75D23A5E2A900A3BA7A /* QAImageBrowserManagerConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QAImageBrowserManagerConfig.h; sourceTree = "<group>"; };
-		BB9F6C0523838A7000F05116 /* TableView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TableView.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB9F6C0523838A7000F05116 /* QAImageBrowser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QAImageBrowser.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB9F6C0823838A7000F05116 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BB9F6C0923838A7000F05116 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		BB9F6C1423838A7200F05116 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -239,8 +242,10 @@
 			children = (
 				BB7BECC32390E40C00688028 /* QAImageBrowserManager.h */,
 				BB7BECC22390E40C00688028 /* QAImageBrowserManager.m */,
-				BB7BECE82395022D00688028 /* ImageProcesser.h */,
-				BB7BECE92395022D00688028 /* ImageProcesser.m */,
+				BB2FF43423A738820033F1D6 /* QAImageBroeserDownloadManager.h */,
+				BB2FF43523A738820033F1D6 /* QAImageBroeserDownloadManager.m */,
+				BB7BECE82395022D00688028 /* QAImageProcesser.h */,
+				BB7BECE92395022D00688028 /* QAImageProcesser.m */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -275,7 +280,7 @@
 		BB9F6C0623838A7000F05116 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BB9F6C0523838A7000F05116 /* TableView.app */,
+				BB9F6C0523838A7000F05116 /* QAImageBrowser.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -478,7 +483,7 @@
 			);
 			name = TableView;
 			productName = TableView;
-			productReference = BB9F6C0523838A7000F05116 /* TableView.app */;
+			productReference = BB9F6C0523838A7000F05116 /* QAImageBrowser.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -603,6 +608,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BB2FF43623A738820033F1D6 /* QAImageBroeserDownloadManager.m in Sources */,
 				BB9F6C0A23838A7000F05116 /* AppDelegate.m in Sources */,
 				BB9F6C7623838BEB00F05116 /* UIImage+DecodeImage.m in Sources */,
 				BB9F6C7E23838BEB00F05116 /* QATextLayout.m in Sources */,
@@ -618,7 +624,7 @@
 				BB9F6C9323838BF300F05116 /* AdvancedCell.m in Sources */,
 				BB9F6C7C23838BEB00F05116 /* QAHighlightTextManager.m in Sources */,
 				BB9F6C7123838BEB00F05116 /* QAAttributedLayer.m in Sources */,
-				BB7BECEA2395022D00688028 /* ImageProcesser.m in Sources */,
+				BB7BECEA2395022D00688028 /* QAImageProcesser.m in Sources */,
 				BB9F6C7D23838BEB00F05116 /* QAEmojiTextManager.m in Sources */,
 				BB9F6C9223838BF300F05116 /* AdvancedViewController.m in Sources */,
 				BB9F6C7323838BEB00F05116 /* NSString+Md5.m in Sources */,
@@ -768,7 +774,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Avery.QAImageBrowser;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = QAImageBrowser;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -788,7 +794,7 @@
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = Avery.QAImageBrowser;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = QAImageBrowser;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;

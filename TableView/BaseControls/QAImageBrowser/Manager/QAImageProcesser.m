@@ -1,16 +1,16 @@
 //
-//  ImageProcesser.m
+//  QAImageProcesser.m
 //  TableView
 //
 //  Created by Avery An on 2019/12/2.
 //  Copyright © 2019 Avery. All rights reserved.
 //
 
-#import "ImageProcesser.h"
+#import "QAImageProcesser.h"
 
 static BOOL ProcessBytesPerRowAlignment = YES;  // 是否要进行字节对齐
 
-@implementation ImageProcesser
+@implementation QAImageProcesser
 
 #pragma mark - Public Methods -
 + (CGRect)caculateOriginImageSize:(UIImage *)image {
