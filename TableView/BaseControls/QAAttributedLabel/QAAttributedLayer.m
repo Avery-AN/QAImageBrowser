@@ -11,53 +11,22 @@
 #import "QATextLayout.h"
 #import "QATextDrawer.h"
 #import "QAAttributedLabelConfig.h"
-#import <stdatomic.h>
-
-
-static dispatch_queue_t QAAttributedLayerDrawQueue() {
-#define MAX_QUEUE_COUNT 16
-    static int queueCount;
-    static dispatch_queue_t queues[MAX_QUEUE_COUNT];
-    static dispatch_once_t onceToken;
-    static atomic_int counter = 0;
-    dispatch_once(&onceToken, ^{
-        queueCount = (int)[NSProcessInfo processInfo].activeProcessorCount;
-        queueCount = queueCount < 1 ? 1 : queueCount > MAX_QUEUE_COUNT ? MAX_QUEUE_COUNT : queueCount;
-        if ([UIDevice currentDevice].systemVersion.floatValue >= 8.) {
-            for (NSUInteger i = 0; i < queueCount; i++) {
-                dispatch_queue_attr_t queue_attr = dispatch_queue_attr_make_with_qos_class(DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INITIATED, 0);
-                queues[i] = dispatch_queue_create("com.avery.QAAttributedLayer.render", queue_attr);
-            }
-        } else {
-            for (NSUInteger i = 0; i < queueCount; i++) {
-                queues[i] = dispatch_queue_create("com.avery.QAAttributedLayer.render", DISPATCH_QUEUE_SERIAL);
-                dispatch_set_target_queue(queues[i], dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0));
-            }
-        }
-    });
-    
-    // 线程安全的自增计数,每调用一次+1
-    atomic_fetch_add_explicit(&counter, 1, memory_order_relaxed);
-    return queues[(counter) % queueCount];
-#undef MAX_QUEUE_COUNT
-}
-
 
 @interface QAAttributedLayer () {
     NSRange _currentTapedRange;  // 当点击高亮文案时保存点击处的range
     __block NSDictionary *_currentTapedAttributeInfo;  // 当点击高亮文案时保存点击处的attributeInfo
     __block NSMutableArray *_currentTapedAttributeInfo_other;  // 当点击高亮文案时保存点击处文案里包含的其它高亮文本的attributeInfo (PS: 高亮文案中包含有搜索到的高亮文案)
 }
-@property (nonatomic, strong, nullable) NSMutableAttributedString *renderText;
 @property (nonatomic, copy, nullable, readonly) NSMutableAttributedString *attributedText_backup;
 @property (nonatomic, copy, nullable, readonly) NSString *text_backup;
+@property (nonatomic) BOOL contentUpdating;  // 正在更新UI
 @end
 
 @implementation QAAttributedLayer
 
 #pragma mark - Life Cycle -
 - (void)dealloc {
-//    NSLog(@"%s",__func__);
+    // NSLog(@"%s",__func__);
 }
 - (instancetype)init {
     if (self = [super init]) {
@@ -77,18 +46,21 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
         self.contents = nil;
         return;
     }
-    else if ([self.attributedText_backup isEqual:attributedLabel.attributedText]) {
+    else if ([self.attributedText_backup isEqual:attributedLabel.attributedString]) {
         if (self.currentCGImage) {
             self.contents = self.currentCGImage;
         }
         return;
     }
     else {  // 前后两次display时文案不一致的情况
-        if (attributedLabel.attributedText) {
-            self->_attributedText_backup = attributedLabel.attributedText;
+        if (!attributedLabel) {
+            return;
         }
         else if (attributedLabel.text) {
             self->_text_backup = attributedLabel.text;
+        }
+        else if (attributedLabel.attributedString) {
+            self->_attributedText_backup = attributedLabel.attributedString;
         }
         [self fillContents:attributedLabel];
     }
@@ -97,7 +69,7 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
 
 #pragma mark - Public Apis -
 - (NSMutableAttributedString * _Nullable)getAttributedStringWithString:(NSString * _Nonnull)content
-                                                              maxWidth:(CGFloat)width {
+                                                              maxWidth:(CGFloat)maxWidth {
     NSString *showContent = [content copy];
     QAAttributedLabel *attributedLabel = (QAAttributedLabel *)self.delegate;
 
@@ -114,15 +86,11 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
                                         highlightRanges:&highlightRanges];
     
     // 生成NSMutableAttributedString:
-    if (!attributedLabel.textLayout.textAttributes ||
-        attributedLabel.textLayout.textAttributes.count == 0) {
-        [attributedLabel.textLayout getTextAttributes];
-    }
-    
     /* 转换UTF8
      [string stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];  // iOS 9以前
      [string stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];  // iOS 9以后
      */
+    [attributedLabel.textLayout getTextAttributes];
     __block NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:showContent attributes:attributedLabel.textLayout.textAttributes];
     
     // 处理自定义的Emoji:
@@ -160,7 +128,7 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
         self.truncationInfo = nil;
     }
     else {
-        CGSize size = CGSizeMake(width, CGFLOAT_MAX);
+        CGSize size = CGSizeMake(maxWidth, CGFLOAT_MAX);
         [self processSeemoreText:attributedText
                             size:size
                       completion:^(BOOL showMoreTextEffected, NSMutableAttributedString * _Nonnull attributedString) {
@@ -239,9 +207,6 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
     if (attributedText.textChangedDic == nil) {
         attributedText.textChangedDic = [NSMutableDictionary dictionary];
     }
-
-    // 更新attributedLabel的 attributedText & text 的属性值:
-    [self updateAttributeText:attributedText forAttributedLabel:attributedLabel];
     
     return attributedText;
 }
@@ -249,7 +214,7 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
     self.currentCGImage = self.contents;   // 保存当前的self.contents以供clearHighlightColor方法中使用
     
     QAAttributedLabel *attributedLabel = (QAAttributedLabel *)self.delegate;
-    NSMutableAttributedString *attributedText = attributedLabel.attributedText;
+    NSMutableAttributedString *attributedText = attributedLabel.attributedString;
     CGRect bounds = attributedLabel.bounds;
     
     if ((attributedLabel.text && [attributedLabel.text isKindOfClass:[NSString class]] && attributedLabel.text.length > 0) ||
@@ -289,7 +254,7 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
 - (void)drawHighlightColorWithSearchRanges:(NSArray * _Nonnull)ranges
                              attributeInfo:(NSDictionary * _Nonnull)info {
     QAAttributedLabel *attributedLabel = (QAAttributedLabel *)self.delegate;
-    NSMutableAttributedString *attributedText = attributedLabel.attributedText;
+    NSMutableAttributedString *attributedText = attributedLabel.attributedString;
     CGRect bounds = attributedLabel.bounds;
     
     // 更新attributedText的相关属性设置 (设置attributedText中搜索到的文案的高亮属性):
@@ -302,9 +267,6 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
               textBackgroundColor:textBackgroundColor
                             range:range];
     }
-    
-    // 更新attributedLabel的 attributedText & text 的属性值:
-    [self updateAttributeText:attributedText forAttributedLabel:attributedLabel];
     
     // 获取上下文:
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(bounds.size.width, bounds.size.height), self.opaque, 0);
@@ -324,10 +286,17 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
                                  cancel:nil];
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    self.currentCGImage = (__bridge id _Nullable)(image.CGImage);
     UIGraphicsEndImageContext();
-    self.contents = (__bridge id _Nullable)(image.CGImage);
     
-    self.currentCGImage = self.contents;   // 保存当前的self.contents以供clearHighlightColor方法中使用
+    if ([[NSThread currentThread] isMainThread]) {
+        self.contents = self.currentCGImage;
+    }
+    else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.contents = self.currentCGImage;
+        });
+    }
 }
 
 - (void)clearHighlightColor:(NSRange)range {
@@ -337,7 +306,7 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
         dispatch_async(QAAttributedLayerDrawQueue(), ^{
             // 清除当点击高亮文案时所做的文案高亮属性的修改 (将点击时添加的高亮颜色去掉、并恢复到点击之前的颜色状态):
             QAAttributedLabel *attributedLabel = (QAAttributedLabel *)self.delegate;
-            NSMutableAttributedString *attributedText = attributedLabel.attributedText;
+            NSMutableAttributedString *attributedText = attributedLabel.attributedString;
             if (attributedText) {
                 // 更新attributedText的相关属性设置:
                 [self updateAttributeText:attributedText
@@ -386,6 +355,16 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
                                      cancel:nil];
     });
 }
+- (void)updateContent:(QAAttributedLabel *)attributedLabel {
+    // NSLog(@"%s",__func__);
+//
+//    self.contentUpdating = YES;
+//
+//    if (!attributedLabel) {
+//        return;
+//    }
+//    [self fillContents:attributedLabel];
+}
 
 
 #pragma mark - Private Methods -
@@ -395,11 +374,10 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
     if (CGSizeEqualToSize(self.bounds.size, CGSizeZero)) {
         return;
     }
-    else if (attributedLabel.attributedText == nil || attributedLabel.attributedText.length == 0) {
-        if (attributedLabel.text == nil || attributedLabel.text.length == 0) {
-            self.contents = nil;
-            return;
-        }
+    else if ((attributedLabel.attributedString == nil || attributedLabel.attributedString.length == 0) &&
+             (attributedLabel.text == nil || attributedLabel.text.length == 0)) {
+        self.contents = nil;
+        return;
     }
     
     if (attributedLabel.display_async) {
@@ -489,7 +467,7 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
 - (void)fillContentsWithContext:(CGContextRef)context
                           label:(QAAttributedLabel *)attributedLabel
                      selfBounds:(CGRect)bounds
-            checkAttributedText:(BOOL(^)(NSString *content))checkAttributedText
+            checkAttributedText:(BOOL(^)(NSString *content))checkAttributedTextBlock
                          cancel:(void(^)(void))cancel
                      completion:(void(^)(void))completion {
     NSString *content = attributedLabel.text;
@@ -497,14 +475,8 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
     CGFloat boundsHeight = bounds.size.height;
     
     NSMutableAttributedString *attributedText = nil;
-    if (attributedLabel.attributedText &&
-        attributedLabel.attributedText.string &&
-        attributedLabel.attributedText.string.length > 0) {
-        attributedText = [attributedLabel.attributedText mutableCopy];
-        NSDictionary *dic = [attributedLabel.attributedText getInstanceProperty];
-        [attributedText setFunctions:dic];
-    }
-    else {
+    
+    if (self.contentUpdating) {  // updateContent的情况
         if (content == nil) {
             return;
         }
@@ -516,6 +488,40 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
             self->_text_backup = nil;
         }
     }
+    else {
+        if (attributedLabel.attributedString && attributedLabel.attributedString.string.length > 0) {
+            attributedText = [attributedLabel.attributedString mutableCopy];
+            NSDictionary *dic = [attributedLabel.attributedString getInstanceProperty];
+            [attributedText setFunctions:dic];
+            if (self.renderText == nil) {
+                self.renderText = attributedLabel.attributedString;
+            }
+            
+            /*
+             if (attributedLabel.attributedString) {
+                 attributedText = [self getAttributedStringWithAttributedString:attributedLabel.attributedString
+                                                                       maxWidth:boundsWidth];
+                 
+                 if (self.attributedText_backup) {
+                     self->_attributedText_backup = attributedText;
+                     self->_text_backup = nil;
+                 }
+             }
+             */
+        }
+        else {
+            if (content == nil) {
+                return;
+            }
+            attributedText = [self getAttributedStringWithString:content
+                                                        maxWidth:boundsWidth];
+            
+            if (self.text_backup) {
+                self->_attributedText_backup = attributedText;
+                self->_text_backup = nil;
+            }
+        }
+    }
     
     // 保存高亮相关信息(link & at & Topic & Seemore)到attributedText中:
     int saveResult = [self saveHighlightRanges:attributedText.highlightRanges
@@ -523,7 +529,7 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
                                 truncationInfo:attributedText.truncationInfo
                                attributedLabel:attributedLabel
                               attributedString:attributedText
-                           checkAttributedText:checkAttributedText
+                           checkAttributedText:checkAttributedTextBlock
                                         cancel:cancel];
     if (saveResult == -1) {
         return;
@@ -539,7 +545,7 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
                                            textAlignment:attributedLabel.textAlignment
                                           truncationText:attributedText.truncationInfo
                                        saveHighlightText:YES
-                                     checkAttributedText:checkAttributedText
+                                     checkAttributedText:checkAttributedTextBlock
                                                   cancel:cancel];
     if (drawResult == -1) {
         return;
@@ -1050,22 +1056,22 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
         }
     }
 }
-- (void)updateAttributeText:(NSMutableAttributedString *)attributedText
-         forAttributedLabel:(QAAttributedLabel *)attributedLabel {
-    /*
-     [attributedLabel performSelector:@selector(updateText:) withObject:attributedText.string];
-     [attributedLabel performSelector:@selector(updateAttributedText:) withObject:attributedText];
-     */
-    SEL updateTextSelector = NSSelectorFromString(@"updateText:");
-    IMP updateTextSelectorImp = [attributedLabel methodForSelector:updateTextSelector];
-    void (*updateText)(id, SEL, NSString *) = (void *)updateTextSelectorImp;
-    updateText(attributedLabel, updateTextSelector, attributedText.string);
-    
-    SEL updateAttributedTextSelector = NSSelectorFromString(@"updateAttributedText:");
-    IMP updateAttributedTextImp = [attributedLabel methodForSelector:updateAttributedTextSelector];
-    void (*updateAttributedText)(id, SEL, NSMutableAttributedString *) = (void *)updateAttributedTextImp;
-    updateAttributedText(attributedLabel, updateAttributedTextSelector, attributedText);
-}
+//- (void)updateAttributeText:(NSMutableAttributedString *)attributedText
+//         forAttributedLabel:(QAAttributedLabel *)attributedLabel {
+//    /*
+//     [attributedLabel performSelector:@selector(updateText:) withObject:attributedText.string];
+//
+//     SEL updateTextSelector = NSSelectorFromString(@"updateText:");
+//     IMP updateTextSelectorImp = [attributedLabel methodForSelector:updateTextSelector];
+//     void (*updateText)(id, SEL, NSString *) = (void *)updateTextSelectorImp;
+//     updateText(attributedLabel, updateTextSelector, attributedText.string);
+//     */
+//
+//    SEL updateAttributedTextSelector = NSSelectorFromString(@"updateAttributedText:");
+//    IMP updateAttributedTextImp = [attributedLabel methodForSelector:updateAttributedTextSelector];
+//    void (*updateAttributedText)(id, SEL, NSMutableAttributedString *) = (void *)updateAttributedTextImp;
+//    updateAttributedText(attributedLabel, updateAttributedTextSelector, attributedText);
+//}
 - (void)restoreAttributedInfo:(NSDictionary *)attributeInfo
                       inRange:(NSRange)range
             forAttributedText:(NSMutableAttributedString *)attributedText {
@@ -1087,15 +1093,58 @@ static dispatch_queue_t QAAttributedLayerDrawQueue() {
     }
 }
 - (BOOL)checkWithContent:(NSString *)content {
-    if (content == nil) {
+    if (self.contentUpdating) {
+        return NO;
+    }
+    else if (content == nil) {
         return YES;
     }
-    
-    if (self.attributedText_backup && ![self.attributedText_backup.string isEqualToString:content]) {
+    else if (self.attributedText_backup && ![self.attributedText_backup.string isEqualToString:content]) {
         return YES;
     }
     
     return NO;
+}
+
+/**
+ 处理attributedString中的自定义emoji & 文本末尾的"...全文"
+ */
+- (NSMutableAttributedString * _Nullable)getAttributedStringWithAttributedString:(NSMutableAttributedString * _Nonnull)attributedString maxWidth:(CGFloat)maxWidth {
+    __block NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithAttributedString:attributedString];
+    QAAttributedLabel *attributedLabel = (QAAttributedLabel *)self.delegate;
+    
+    // 处理自定义的Emoji:
+    [QAEmojiTextManager processDiyEmojiText:attributedText
+                                       font:attributedLabel.font
+                                  wordSpace:attributedLabel.wordSpace
+                             textAttributes:attributedLabel.textLayout.textAttributes
+                                 completion:^(BOOL success, NSArray * _Nullable emojiTexts, NSArray * _Nullable matches) {
+                                 }];
+    
+    // 处理SeeMoreText & 生成renderText (更新了attributedText中SeeMoreText的文本属性):
+    if (attributedLabel.numberOfLines == 0) {  // numberOfLines值为0时表示需要显示所有文本
+        self.renderText = attributedText;
+        self.truncationInfo = nil;
+    }
+    else {
+        CGSize size = CGSizeMake(maxWidth, CGFLOAT_MAX);
+        [self processSeemoreText:attributedText
+                            size:size
+                      completion:^(BOOL showMoreTextEffected, NSMutableAttributedString * _Nonnull attributedString) {
+                                  if (showMoreTextEffected == YES) {
+                                      attributedText = attributedString;
+                                  }
+                                }];
+    }
+    attributedText.truncationInfo = self.truncationInfo;
+    if (attributedText.textTypeDic == nil) {
+        attributedText.textTypeDic = [NSMutableDictionary dictionary];
+    }
+    if (attributedText.textDic == nil) {
+        attributedText.textDic = [NSMutableDictionary dictionary];
+    }
+    
+    return attributedText;
 }
 
 
