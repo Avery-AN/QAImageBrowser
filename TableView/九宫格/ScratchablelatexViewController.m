@@ -134,23 +134,22 @@
         cell.content.QAAttributedLabelTapAction = ^(NSString * _Nullable content, QAAttributedLabel_TapedStyle style) {
             NSLog(@"   ScratchablelatexCell-Label-TapAction: %@; style: %lu", content, (unsigned long)style);
         };
-    }
-    
+        
 
-    /**
-     这里仅仅是为了测试 QAAttributedLabel的 'searchTexts:' 这个方法
-     这里仅仅是为了测试 QAAttributedLabel的 'searchTexts:' 这个方法
-     这里仅仅是为了测试 QAAttributedLabel的 'searchTexts:' 这个方法
-     */
-    cell.content.highLightTexts = nil;
-    if (indexPath.row == 0) {
-        [self performSelector:@selector(searchText:) withObject:cell afterDelay:.7];
+        /**
+         这里仅仅是为了测试 QAAttributedLabel的 'searchTexts:' 这个方法
+         这里仅仅是为了测试 QAAttributedLabel的 'searchTexts:' 这个方法
+         这里仅仅是为了测试 QAAttributedLabel的 'searchTexts:' 这个方法
+         */
+        cell.content.highLightTexts = nil;
+        if (indexPath.row == 0) {
+            [self performSelector:@selector(searchText:) withObject:cell afterDelay:.7];
+        }
+        else if (indexPath.row == 1) {
+            [self performSelector:@selector(searchText:) withObject:cell afterDelay:.7];
+        }
+        
     }
-    else if (indexPath.row == 1) {
-        [self performSelector:@selector(searchText:) withObject:cell afterDelay:.7];
-    }
-    
-    
     
     NSDictionary *dic = [self.showDatas objectAtIndex:indexPath.row];
     [cell showStytle:dic];

@@ -268,6 +268,13 @@
                             range:range];
     }
     
+    // 更新搜索数据到数据源中:
+    SEL appendSearchResultSelector = NSSelectorFromString(@"appendSearchResult:");
+    IMP appendSearchResultImp = [attributedLabel methodForSelector:appendSearchResultSelector];
+    void (*appendSearchResult)(id, SEL, NSMutableAttributedString *) = (void *)appendSearchResultImp;
+    appendSearchResult(attributedLabel, appendSearchResultSelector, attributedText);
+    
+    
     // 获取上下文:
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(bounds.size.width, bounds.size.height), self.opaque, 0);
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -357,13 +364,13 @@
 }
 - (void)updateContent:(QAAttributedLabel *)attributedLabel {
     // NSLog(@"%s",__func__);
-//
-//    self.contentUpdating = YES;
-//
-//    if (!attributedLabel) {
-//        return;
-//    }
-//    [self fillContents:attributedLabel];
+
+    if (!attributedLabel) {
+        return;
+    }
+    
+    self.contentUpdating = YES;
+    [self fillContents:attributedLabel];
 }
 
 
@@ -477,22 +484,30 @@
     NSMutableAttributedString *attributedText = nil;
     
     if (self.contentUpdating) {  // updateContent的情况
-        if (content == nil) {
-            return;
+        if (attributedLabel.srcAttributedString) {
+            self.contentUpdating = NO;
+            
+            attributedText = attributedLabel.attributedString;
+            if (self.renderText == nil) {
+                self.renderText = attributedLabel.attributedString;
+            }
         }
-        attributedText = [self getAttributedStringWithString:content
-                                                    maxWidth:boundsWidth];
-        
-        if (self.text_backup) {
-            self->_attributedText_backup = attributedText;
-            self->_text_backup = nil;
+        else {
+            if (content == nil) {
+                return;
+            }
+            attributedText = [self getAttributedStringWithString:content
+                                                        maxWidth:boundsWidth];
+            
+            if (self.text_backup) {
+                self->_attributedText_backup = attributedText;
+                self->_text_backup = nil;
+            }
         }
     }
     else {
         if (attributedLabel.attributedString && attributedLabel.attributedString.string.length > 0) {
-            attributedText = [attributedLabel.attributedString mutableCopy];
-            NSDictionary *dic = [attributedLabel.attributedString getInstanceProperty];
-            [attributedText setFunctions:dic];
+            attributedText = attributedLabel.attributedString;
             if (self.renderText == nil) {
                 self.renderText = attributedLabel.attributedString;
             }
@@ -523,7 +538,25 @@
         }
     }
     
-    // 保存高亮相关信息(link & at & Topic & Seemore)到attributedText中:
+
+    
+    // 处理搜索结果:
+    if (attributedText.searchRanges && attributedText.searchRanges.count > 0) {
+        UIColor *textColor = [attributedText.searchAttributeInfo valueForKey:@"textColor"];
+        UIColor *textBackgroundColor = [attributedText.searchAttributeInfo valueForKey:@"textBackgroundColor"];
+        for (NSString *rangeString in attributedText.searchRanges) {
+            NSRange range = NSRangeFromString(rangeString);
+            [self updateAttributeText:attributedText
+                        withTextColor:textColor
+                  textBackgroundColor:textBackgroundColor
+                                range:range];
+        }
+    }
+    
+    
+    
+    
+    // 保存高亮相关信息(link & at & Topic & Seemore)到attributedText对应的属性中:
     int saveResult = [self saveHighlightRanges:attributedText.highlightRanges
                              highlightContents:attributedText.highlightContents
                                 truncationInfo:attributedText.truncationInfo
@@ -1016,7 +1049,7 @@
         if (self.currentCGImage) {
             // 保存当前点击处的attributeInfo:
             NSRange effectiveRange = NSMakeRange(0, 0);
-            self->_currentTapedAttributeInfo = [attributedText attributesAtIndex:range.location effectiveRange:&effectiveRange];  //effectiveRange参数是引用参数，该参数反映了在所检索的位置上字符串中具有当前属性的范围
+            self->_currentTapedAttributeInfo = [attributedText attributesAtIndex:range.location effectiveRange:&effectiveRange];  // effectiveRange参数是引用参数，该参数反映了在所检索的位置上字符串中具有当前属性的范围
             self->_currentTapedAttributeInfo_other = [NSMutableArray array];
             for (NSString *searchRangeString in attributedText.searchRanges) {
                 NSRange searchRange = NSRangeFromString(searchRangeString);

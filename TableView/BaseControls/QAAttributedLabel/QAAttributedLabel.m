@@ -60,7 +60,7 @@ static void *TouchingContext = &TouchingContext;
 @interface QAAttributedLabel () {
     Bits_union_property _bits_union_property;
     Bits_union_taped _bits_union_taped;
-    __block NSMutableArray *_searchRanges;
+    __block NSArray *_searchRanges;
     __block NSDictionary *_searchAttributeInfo;
 }
 @property (nonatomic, assign) BOOL drawDone;
@@ -355,6 +355,14 @@ static void *TouchingContext = &TouchingContext;
 
 
 #pragma mark - Private Methods -
+- (void)appendSearchResult:(NSMutableAttributedString *)attributedText {
+    /**
+     若QAAttributedLabel的attributedString属性使用的是strong、则无需再在此方法中做处理
+     */
+    
+    _srcAttributedString.searchAttributeInfo = attributedText.searchAttributeInfo;
+    _srcAttributedString.searchRanges = attributedText.searchRanges;
+}
 - (CGSize)getContentSize {
     NSMutableAttributedString *attributedText;
     if (self.attributedString && self.attributedString.string &&
@@ -376,7 +384,7 @@ static void *TouchingContext = &TouchingContext;
     }
     return size;
 }
-- (void)processSearchResult:(NSMutableArray *)searchRanges
+- (void)processSearchResult:(NSArray *)searchRanges
         searchAttributeInfo:(NSDictionary *)info {
     self.attributedString.searchRanges = searchRanges;
     self.attributedString.searchAttributeInfo = info;
@@ -620,10 +628,28 @@ static void *TouchingContext = &TouchingContext;
     }
 }
 - (void)setAttributedString:(NSMutableAttributedString *)attributedString {
-    _srcAttributedString = [attributedString copy];
+    _srcAttributedString = attributedString;
     
     if ([attributedString isKindOfClass:[NSMutableAttributedString class]]) {
-        _attributedString = attributedString;
+         //_attributedString = attributedString;  // strong
+        
+        _attributedString = [attributedString mutableCopy];
+        NSDictionary *dic = [attributedString getInstanceProperty];
+        [_attributedString setProperties:dic];
+        
+        /*
+         _attributedString = [attributedString mutableCopy];
+         _attributedString.highlightRanges = attributedString.highlightRanges;
+         _attributedString.highlightContents = attributedString.highlightContents;
+         _attributedString.truncationInfo = attributedString.truncationInfo;
+         _attributedString.searchRanges = attributedString.searchRanges;
+         _attributedString.searchAttributeInfo = attributedString.searchAttributeInfo;
+         _attributedString.truncationText = attributedString.truncationText;
+         _attributedString.textDic = attributedString.textDic;
+         _attributedString.textChangedDic = attributedString.textChangedDic;
+         _attributedString.textTypeDic = attributedString.textTypeDic;
+         _attributedString.showMoreTextEffected = attributedString.showMoreTextEffected;
+         */
     }
     else {
         if (!attributedString) {
