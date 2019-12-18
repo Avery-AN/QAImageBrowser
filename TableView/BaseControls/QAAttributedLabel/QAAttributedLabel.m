@@ -352,6 +352,14 @@ static void *TouchingContext = &TouchingContext;
 
 
 #pragma mark - Private Methods -
+- (void)updateAttributedText:(NSMutableAttributedString *)attributedText {
+    if ([attributedText isKindOfClass:[NSMutableAttributedString class]]) {
+        _attributedString = attributedText;  // 为了保证attributedText中的highlightRanges、highlightContents等信息不丢失、此处不对attributedText进行copy。
+    }
+    else {
+        _attributedString = [[NSMutableAttributedString alloc] initWithAttributedString:attributedText];
+    }
+}
 - (void)appendSearchResult:(NSMutableAttributedString *)attributedText {
     /**
      若QAAttributedLabel的attributedString属性使用的是strong、则无需再在此方法中做处理
@@ -416,6 +424,7 @@ static void *TouchingContext = &TouchingContext;
 #pragma mark - Update Layout -
 - (void)_commitUpdate {
     // NSLog(@"%s",__func__);
+    
     self.needUpdate = YES;
 }
 - (void)_updateAfterDraw {

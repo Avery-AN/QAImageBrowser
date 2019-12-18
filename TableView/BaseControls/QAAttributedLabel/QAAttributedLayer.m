@@ -208,6 +208,11 @@
         attributedText.textChangedDic = [NSMutableDictionary dictionary];
     }
     
+    // 在赋值text的情况下更新attributedLabel的 attributedString 的属性值:
+    if (attributedLabel.srcAttributedString == nil) {
+        [self updateAttributeText:attributedText forAttributedLabel:attributedLabel];
+    }
+    
     return attributedText;
 }
 - (void)drawHighlightColor:(NSRange)range {
@@ -369,7 +374,7 @@
     if (!attributedLabel) {
         return;
     }
-    
+
     self.contentUpdating = YES;
     [self fillContents:attributedLabel];
 }
@@ -1092,22 +1097,22 @@
         }
     }
 }
-//- (void)updateAttributeText:(NSMutableAttributedString *)attributedText
-//         forAttributedLabel:(QAAttributedLabel *)attributedLabel {
-//    /*
-//     [attributedLabel performSelector:@selector(updateText:) withObject:attributedText.string];
-//
-//     SEL updateTextSelector = NSSelectorFromString(@"updateText:");
-//     IMP updateTextSelectorImp = [attributedLabel methodForSelector:updateTextSelector];
-//     void (*updateText)(id, SEL, NSString *) = (void *)updateTextSelectorImp;
-//     updateText(attributedLabel, updateTextSelector, attributedText.string);
-//     */
-//
-//    SEL updateAttributedTextSelector = NSSelectorFromString(@"updateAttributedText:");
-//    IMP updateAttributedTextImp = [attributedLabel methodForSelector:updateAttributedTextSelector];
-//    void (*updateAttributedText)(id, SEL, NSMutableAttributedString *) = (void *)updateAttributedTextImp;
-//    updateAttributedText(attributedLabel, updateAttributedTextSelector, attributedText);
-//}
+- (void)updateAttributeText:(NSMutableAttributedString *)attributedText
+         forAttributedLabel:(QAAttributedLabel *)attributedLabel {
+    /*
+     [attributedLabel performSelector:@selector(updateText:) withObject:attributedText.string];
+
+     SEL updateTextSelector = NSSelectorFromString(@"updateText:");
+     IMP updateTextSelectorImp = [attributedLabel methodForSelector:updateTextSelector];
+     void (*updateText)(id, SEL, NSString *) = (void *)updateTextSelectorImp;
+     updateText(attributedLabel, updateTextSelector, attributedText.string);
+     */
+
+    SEL updateAttributedTextSelector = NSSelectorFromString(@"updateAttributedText:");
+    IMP updateAttributedTextImp = [attributedLabel methodForSelector:updateAttributedTextSelector];
+    void (*updateAttributedText)(id, SEL, NSMutableAttributedString *) = (void *)updateAttributedTextImp;
+    updateAttributedText(attributedLabel, updateAttributedTextSelector, attributedText);
+}
 - (void)restoreAttributedInfo:(NSDictionary *)attributeInfo
                       inRange:(NSRange)range
             forAttributedText:(NSMutableAttributedString *)attributedText {
