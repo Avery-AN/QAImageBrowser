@@ -252,9 +252,9 @@
  针对ranges处的text批量进行高亮绘制 (SearchText时使用)
  */
 - (void)drawHighlightColorWithSearchRanges:(NSArray * _Nonnull)ranges
-                             attributeInfo:(NSDictionary * _Nonnull)info {
+                             attributeInfo:(NSDictionary * _Nonnull)info
+                        inAttributedString:(NSMutableAttributedString * _Nonnull)attributedText {
     QAAttributedLabel *attributedLabel = (QAAttributedLabel *)self.delegate;
-    NSMutableAttributedString *attributedText = attributedLabel.attributedString;
     CGRect bounds = attributedLabel.bounds;
     
     // 更新attributedText的相关属性设置 (设置attributedText中搜索到的文案的高亮属性):

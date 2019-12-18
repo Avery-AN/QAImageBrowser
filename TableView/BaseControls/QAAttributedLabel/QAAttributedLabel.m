@@ -339,7 +339,7 @@ static void *TouchingContext = &TouchingContext;
             NSDictionary *info = searchResultInfo();
             
             if (self.isTouching == NO) {
-                [self processSearchResult:searchRanges searchAttributeInfo:info];
+                [self processSearchResult:searchRanges searchAttributeInfo:info attributedString:self.attributedString];
             }
             else {
                 self->_searchRanges = searchRanges;
@@ -382,7 +382,8 @@ static void *TouchingContext = &TouchingContext;
     return size;
 }
 - (void)processSearchResult:(NSArray *)searchRanges
-        searchAttributeInfo:(NSDictionary *)info {
+        searchAttributeInfo:(NSDictionary *)info
+           attributedString:(NSMutableAttributedString *)attributedString {
     self.attributedString.searchRanges = searchRanges;
     self.attributedString.searchAttributeInfo = info;
     
@@ -390,7 +391,8 @@ static void *TouchingContext = &TouchingContext;
     if (searchRanges && [searchRanges isKindOfClass:[NSArray class]] && searchRanges.count > 0 &&
         info && [info isKindOfClass:[NSDictionary class]] && info.count > 0) {
         [layer drawHighlightColorWithSearchRanges:searchRanges
-                                    attributeInfo:info];
+                                    attributeInfo:info
+                               inAttributedString:attributedString];
     }
 }
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -403,7 +405,7 @@ static void *TouchingContext = &TouchingContext;
             NSString *newKey = [change objectForKey:NSKeyValueChangeNewKey];
             
             if (oldKey.intValue == 1 && newKey.intValue == 0) {
-                [self processSearchResult:self->_searchRanges searchAttributeInfo:self->_searchAttributeInfo];
+                [self processSearchResult:self->_searchRanges searchAttributeInfo:self->_searchAttributeInfo attributedString:self.attributedString];
                 [self removeObserver:self forKeyPath:NSStringFromSelector(@selector(isTouching))];
             }
         }
