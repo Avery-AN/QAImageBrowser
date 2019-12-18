@@ -308,8 +308,9 @@
 
 - (void)clearHighlightColor:(NSRange)range {
     if (self.currentCGImage) {
-        self.contents = self.currentCGImage;
+        self.contents = self.currentCGImage;  // contents恢复点击之前的状态
         
+        // 在后台去恢复点击之前的数据:
         dispatch_async(QAAttributedLayerDrawQueue(), ^{
             // 清除当点击高亮文案时所做的文案高亮属性的修改 (将点击时添加的高亮颜色去掉、并恢复到点击之前的颜色状态):
             QAAttributedLabel *attributedLabel = (QAAttributedLabel *)self.delegate;
@@ -431,6 +432,7 @@
                                     UIGraphicsEndImageContext();
                                     
                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                        strongSelf.contentUpdating = NO;
                                         strongSelf.contents = strongSelf.currentCGImage;
                                     });
                                 }];
@@ -468,6 +470,7 @@
                                     UIGraphicsEndImageContext();
                                     image = [image decodeImage];  // image的解码
                                     strongSelf.currentCGImage = (__bridge id _Nullable)(image.CGImage);
+                                    strongSelf.contentUpdating = NO;
                                     strongSelf.contents = strongSelf.currentCGImage;
                                 }];
 }

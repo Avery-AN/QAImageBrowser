@@ -20,7 +20,6 @@
 #define ShowMoreText_MASK           (1 << 4)  // 0001 0000
 #define Display_async_MASK          (1 << 5)  // 0010 0000
 #define NeedUpdate_MASK             (1 << 6)  // 0100 0000
-#define DrawDone_MASK               (1 << 7)  // 1000 0000
 
 #define TapedLink_MASK              (1 << 0)  // 0000 0001
 #define TapedAt_MASK                (1 << 1)  // 0000 0010
@@ -63,7 +62,6 @@ static void *TouchingContext = &TouchingContext;
     __block NSArray *_searchRanges;
     __block NSDictionary *_searchAttributeInfo;
 }
-@property (nonatomic, assign) BOOL drawDone;
 @property (nonatomic, copy, nullable) NSString *tapedHighlightContent;
 @property (nonatomic, assign) NSRange tapedHighlightRange;
 @property (nonatomic) CGRect currentBounds;
@@ -91,7 +89,6 @@ static void *TouchingContext = &TouchingContext;
     self.layer.contentsScale = [UIScreen mainScreen].scale;
     
     [CATransaction setCompletionBlock:^{
-        self.drawDone = YES;
         [self _updateAfterDraw];
     }];
 }
@@ -434,10 +431,8 @@ static void *TouchingContext = &TouchingContext;
 }
 - (void)_update {
     // NSLog(@"%s",__func__);
-    if (self.drawDone == YES) {
-        [(QAAttributedLayer *)self.layer updateContent:self];
-        self.needUpdate = NO;
-    }
+    [(QAAttributedLayer *)self.layer updateContent:self];
+    self.needUpdate = NO;
 }
 
 
