@@ -87,10 +87,6 @@ static void *TouchingContext = &TouchingContext;
     self.currentBounds = self.bounds;
     self.backgroundColor = [UIColor whiteColor];
     self.layer.contentsScale = [UIScreen mainScreen].scale;
-    
-    [CATransaction setCompletionBlock:^{
-        [self _updateAfterDraw];
-    }];
 }
 
 
@@ -375,8 +371,10 @@ static void *TouchingContext = &TouchingContext;
         attributedText = self.attributedString;
     }
     else {
-        [self.textLayout getTextAttributes];
-        attributedText = [[NSMutableAttributedString alloc] initWithString:self.text attributes:self.textLayout.textAttributes];
+        NSDictionary *textAttributes = [self.textLayout getTextAttributesWithCheckBlock:^BOOL{
+            return NO;
+        }];
+        attributedText = [[NSMutableAttributedString alloc] initWithString:self.text attributes:textAttributes];
     }
     
     CGSize size = CGSizeZero;
@@ -426,13 +424,17 @@ static void *TouchingContext = &TouchingContext;
     // NSLog(@"%s",__func__);
     
     self.needUpdate = YES;
-}
-- (void)_updateAfterDraw {
-    #if !TARGET_INTERFACE_BUILDER
-        [[QATextTransaction transactionWithTarget:self selector:@selector(_updateIfNeeded)] commit];
-    #else
-        [self _update];
-    #endif
+    [self _update];
+    
+    /**
+     self.needUpdate = YES;
+
+     #if !TARGET_INTERFACE_BUILDER
+         [[QATextTransaction transactionWithTarget:self selector:@selector(_updateIfNeeded)] commit];
+     #else
+         [self _update];
+     #endif
+     */
 }
 - (void)_updateIfNeeded {
     // NSLog(@"%s",__func__);
@@ -442,8 +444,16 @@ static void *TouchingContext = &TouchingContext;
 }
 - (void)_update {
     // NSLog(@"%s",__func__);
-    [(QAAttributedLayer *)self.layer updateContent:self];
+    
     self.needUpdate = NO;
+    if ([[NSThread currentThread] isMainThread]) {
+        [self.layer setNeedsDisplay];
+    }
+    else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.layer setNeedsDisplay];
+        });
+    }
 }
 
 
@@ -624,14 +634,7 @@ static void *TouchingContext = &TouchingContext;
     
     _text = [text copy];
     
-    if ([NSThread isMainThread]) {
-        [self.layer setNeedsDisplay];
-    }
-    else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.layer setNeedsDisplay];
-        });
-    }
+    [self _commitUpdate];
 }
 - (void)setAttributedString:(NSMutableAttributedString *)attributedString {
     _srcAttributedString = attributedString;
@@ -666,14 +669,7 @@ static void *TouchingContext = &TouchingContext;
         }
     }
     
-    if ([NSThread isMainThread]) {
-        [self.layer setNeedsDisplay];
-    }
-    else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.layer setNeedsDisplay];
-        });
-    }
+    [self _commitUpdate];
 }
 
 - (QATextLayout *)textLayout {
