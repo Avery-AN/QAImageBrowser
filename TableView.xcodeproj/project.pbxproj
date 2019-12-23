@@ -58,7 +58,7 @@
 		BB9F6C9123838BF300F05116 /* AdvancedCell+SelfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9F6C8B23838BF300F05116 /* AdvancedCell+SelfManager.m */; };
 		BB9F6C9223838BF300F05116 /* AdvancedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9F6C8F23838BF300F05116 /* AdvancedViewController.m */; };
 		BB9F6C9323838BF300F05116 /* AdvancedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9F6C9023838BF300F05116 /* AdvancedCell.m */; };
-		BBA5395823B0AEC300977DD7 /* NSMutableAttributedString+TextDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = BBA5395723B0AEC200977DD7 /* NSMutableAttributedString+TextDraw.m */; };
+		BBA5395823B0AEC300977DD7 /* QATextDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = BBA5395723B0AEC200977DD7 /* QATextDraw.m */; };
 		BBCD5DC123A50CBA00950B71 /* 9.JPG in Resources */ = {isa = PBXBuildFile; fileRef = BBCD5DB723A50CBA00950B71 /* 9.JPG */; };
 		BBCD5DC223A50CBA00950B71 /* 8.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = BBCD5DB823A50CBA00950B71 /* 8.jpeg */; };
 		BBCD5DC323A50CBA00950B71 /* 4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BBCD5DB923A50CBA00950B71 /* 4.jpg */; };
@@ -173,8 +173,8 @@
 		BB9F6C8F23838BF300F05116 /* AdvancedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvancedViewController.m; sourceTree = "<group>"; };
 		BB9F6C9023838BF300F05116 /* AdvancedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvancedCell.m; sourceTree = "<group>"; };
 		BB9F6C9423838DFF00F05116 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
-		BBA5395623B0AEC200977DD7 /* NSMutableAttributedString+TextDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMutableAttributedString+TextDraw.h"; sourceTree = "<group>"; };
-		BBA5395723B0AEC200977DD7 /* NSMutableAttributedString+TextDraw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMutableAttributedString+TextDraw.m"; sourceTree = "<group>"; };
+		BBA5395623B0AEC200977DD7 /* QATextDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QATextDraw.h; sourceTree = "<group>"; };
+		BBA5395723B0AEC200977DD7 /* QATextDraw.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QATextDraw.m; sourceTree = "<group>"; };
 		BBCD5DB723A50CBA00950B71 /* 9.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 9.JPG; sourceTree = "<group>"; };
 		BBCD5DB823A50CBA00950B71 /* 8.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 8.jpeg; sourceTree = "<group>"; };
 		BBCD5DB923A50CBA00950B71 /* 4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 4.jpg; sourceTree = "<group>"; };
@@ -260,9 +260,9 @@
 		BB4EB6B923AF5F1600E17966 /* Md5 */ = {
 			isa = PBXGroup;
 			children = (
+				BB4EB6BC23AF5F1600E17966 /* NSData+Md5.h */,
 				BB4EB6BA23AF5F1600E17966 /* NSData+Md5.m */,
 				BB4EB6BB23AF5F1600E17966 /* NSString+Md5.h */,
-				BB4EB6BC23AF5F1600E17966 /* NSData+Md5.h */,
 				BB4EB6BD23AF5F1600E17966 /* NSString+Md5.m */,
 			);
 			path = Md5;
@@ -397,8 +397,8 @@
 				BBFB190123AA0757009CD0C1 /* QATextTransaction.m */,
 				BB9F6C4423838BEA00F05116 /* QATextLayout.h */,
 				BB9F6C4E23838BEA00F05116 /* QATextLayout.m */,
-				BBA5395623B0AEC200977DD7 /* NSMutableAttributedString+TextDraw.h */,
-				BBA5395723B0AEC200977DD7 /* NSMutableAttributedString+TextDraw.m */,
+				BBA5395623B0AEC200977DD7 /* QATextDraw.h */,
+				BBA5395723B0AEC200977DD7 /* QATextDraw.m */,
 				BB9F6C4C23838BEA00F05116 /* QATextRunDelegate.h */,
 				BB9F6C2F23838BEA00F05116 /* QATextRunDelegate.m */,
 				BB4EB6B823AF5F1600E17966 /* MmapClasses */,
@@ -692,7 +692,7 @@
 				BB9F6C8923838BEB00F05116 /* ScratchablelatexViewController.m in Sources */,
 				BB4EB6CC23AF5F1600E17966 /* QAImageFileManager.m in Sources */,
 				BB9F6C1B23838A7200F05116 /* main.m in Sources */,
-				BBA5395823B0AEC300977DD7 /* NSMutableAttributedString+TextDraw.m in Sources */,
+				BBA5395823B0AEC300977DD7 /* QATextDraw.m in Sources */,
 				BB9F6C6D23838BEB00F05116 /* NSString+Additions.m in Sources */,
 				BB4EB6C723AF5F1600E17966 /* NSData+Md5.m in Sources */,
 				BB9F6C7423838BEB00F05116 /* UIImage+QACutImage.m in Sources */,

@@ -9,7 +9,7 @@
 #import "QAAttributedLayer.h"
 #import "QAAttributedLabel.h"
 #import "QATextLayout.h"
-#import "NSMutableAttributedString+TextDraw.h"
+#import "QATextDraw.h"
 #import "QAAttributedLabelConfig.h"
 
 typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
@@ -220,14 +220,14 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
     attributedText.highlightRanges = highlightRanges;
     attributedText.highlightContents = highlightContents;
     attributedText.truncationInfo = self.truncationInfo;
-    if (attributedText.textTypeDic == nil) {
-        attributedText.textTypeDic = [NSMutableDictionary dictionary];
+    if (attributedText.highlightTextTypeDic == nil) {
+        attributedText.highlightTextTypeDic = [NSMutableDictionary dictionary];
     }
-    if (attributedText.textDic == nil) {
-        attributedText.textDic = [NSMutableDictionary dictionary];
+    if (attributedText.highlightTextDic == nil) {
+        attributedText.highlightTextDic = [NSMutableDictionary dictionary];
     }
-    if (attributedText.textChangedDic == nil) {
-        attributedText.textChangedDic = [NSMutableDictionary dictionary];
+    if (attributedText.highlightTextChangedDic == nil) {
+        attributedText.highlightTextChangedDic = [NSMutableDictionary dictionary];
     }
 
     // 在赋值text的情况下更新attributedLabel的 attributedString 的属性值:
@@ -258,7 +258,7 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
                          truncation:YES];
         }
         else {  // 处理 Links & At & Topic 的高亮
-            NSString *contentType = [attributedText.textTypeDic valueForKey:NSStringFromRange(range)];
+            NSString *contentType = [attributedText.highlightTextTypeDic valueForKey:NSStringFromRange(range)];
             UIColor *tapedTextColor = nil;
             UIColor *tapedBackgroundColor = nil;
             [self getTapedTextColor:&tapedTextColor
@@ -443,12 +443,12 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
                                     // 检查绘制是否应该被取消:
                                     return [strongSelf isCancelByCheckingContent:content];
                                 } cancel:^{
-                                    NSLog(@"绘制被取消!!!");
+                                    // NSLog(@"绘制被取消!!!");
                                     UIGraphicsEndImageContext();
                                     
                                     self->_drawState = QAAttributedLayer_State_Normal;
                                 } completion:^(NSMutableAttributedString *attributedText) {
-                                    NSLog(@"绘制完毕");
+                                    // NSLog(@"绘制完毕");
                                     __strong typeof(weakSelf) strongSelf = weakSelf;
                                     
                                     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
@@ -471,10 +471,10 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
                                     dispatch_async(dispatch_get_main_queue(), ^{
                                         strongSelf.contents = strongSelf.currentCGImage;
                                         strongSelf->_drawState = QAAttributedLayer_State_Finished;
-                                        CFAbsoluteTime endTime = CFAbsoluteTimeGetCurrent();
-                                        CFAbsoluteTime loadTime = endTime - self->startTime_beginDraw;
-                                        NSLog(@"loadTime(coretextDraw): %f",loadTime);
-                                        NSLog(@" ");
+                                        // CFAbsoluteTime endTime = CFAbsoluteTimeGetCurrent();
+                                        // CFAbsoluteTime loadTime = endTime - self->startTime_beginDraw;
+                                        // NSLog(@"DrawTime(coretext): %f",loadTime);
+                                        // NSLog(@" ");
                                     });
                                 }];
     });
@@ -538,7 +538,7 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
             return;
         }
         else {
-            NSLog(@" 开始绘制 - attributedText");
+            // NSLog(@" 开始绘制 - attributedText");
             CGFloat boundsWidth = bounds.size.width;
             CGFloat boundsHeight = bounds.size.height;
             
@@ -931,15 +931,15 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
             return - 100;
         }
         
-        [attributedText.textTypeDic setValue:type forKey:NSStringFromRange(highlightRange)];
-        [attributedText.textDic setValue:highlightContent forKey:NSStringFromRange(highlightRange)];
+        [attributedText.highlightTextTypeDic setValue:type forKey:NSStringFromRange(highlightRange)];
+        [attributedText.highlightTextDic setValue:highlightContent forKey:NSStringFromRange(highlightRange)];
         if ([type isEqualToString:@"link"]) {
             if (attributedLabel.showShortLink) {
                 NSString *shortLink = attributedLabel.shortLink ? : QAShortLink_Default;
-                [attributedText.textChangedDic setValue:shortLink forKey:NSStringFromRange(highlightRange)];
+                [attributedText.highlightTextChangedDic setValue:shortLink forKey:NSStringFromRange(highlightRange)];
             }
             else {
-                [attributedText.textChangedDic removeAllObjects];
+                [attributedText.highlightTextChangedDic removeAllObjects];
             }
         }
     }
@@ -1309,11 +1309,11 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
                                 }];
     }
     attributedText.truncationInfo = self.truncationInfo;
-    if (attributedText.textTypeDic == nil) {
-        attributedText.textTypeDic = [NSMutableDictionary dictionary];
+    if (attributedText.highlightTextTypeDic == nil) {
+        attributedText.highlightTextTypeDic = [NSMutableDictionary dictionary];
     }
-    if (attributedText.textDic == nil) {
-        attributedText.textDic = [NSMutableDictionary dictionary];
+    if (attributedText.highlightTextDic == nil) {
+        attributedText.highlightTextDic = [NSMutableDictionary dictionary];
     }
     
     return attributedText;

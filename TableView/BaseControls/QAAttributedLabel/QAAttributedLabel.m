@@ -10,7 +10,7 @@
 #import "QAAttributedLayer.h"
 #import "QATextLayout.h"
 #import "QATextTransaction.h"
-#import "NSMutableAttributedString+TextDraw.h"
+#import "QATextDraw.h"
 
 
 #define LinkHighlight_MASK          (1 << 0)  // 0000 0001
@@ -176,11 +176,11 @@ static void *TouchingContext = &TouchingContext;
                     self.tapedHighlightRange = highlightRange;
                     [layer drawHighlightColor:highlightRange];
 
-                    NSDictionary *highlightTextDic = showingAttributedText.textDic;
+                    NSDictionary *highlightTextDic = showingAttributedText.highlightTextDic;
                     if (highlightTextDic && highlightTextDic.count > 0) {
                         NSString *key = NSStringFromRange(highlightRange);
                         NSString *highlightText = [highlightTextDic valueForKey:key];
-                        NSString *tapedType = [showingAttributedText.textTypeDic valueForKey:key];
+                        NSString *tapedType = [showingAttributedText.highlightTextTypeDic valueForKey:key];
                         if (!tapedType) {
                             return;
                         }
@@ -349,6 +349,44 @@ static void *TouchingContext = &TouchingContext;
 }
 
 
+#pragma mark - Update Layout -
+- (void)_commitUpdate {
+    // NSLog(@"%s",__func__);
+    
+    self.needUpdate = YES;
+    [self _update];
+    
+    /**
+     self.needUpdate = YES;
+
+     #if !TARGET_INTERFACE_BUILDER
+         [[QATextTransaction transactionWithTarget:self selector:@selector(_updateIfNeeded)] commit];
+     #else
+         [self _update];
+     #endif
+     */
+}
+- (void)_updateIfNeeded {
+    // NSLog(@"%s",__func__);
+    if (self.needUpdate) {
+        [self _update];
+    }
+}
+- (void)_update {
+    // NSLog(@"%s",__func__);
+    
+    self.needUpdate = NO;
+    if ([[NSThread currentThread] isMainThread]) {
+        [self.layer setNeedsDisplay];
+    }
+    else {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.layer setNeedsDisplay];
+        });
+    }
+}
+
+
 #pragma mark - Private Methods -
 - (void)updateAttributedText:(NSMutableAttributedString *)attributedText {
     if ([attributedText isKindOfClass:[NSMutableAttributedString class]]) {
@@ -424,44 +462,6 @@ static void *TouchingContext = &TouchingContext;
                 [self removeObserver:self forKeyPath:NSStringFromSelector(@selector(isTouching))];
             }
         }
-    }
-}
-
-
-#pragma mark - Update Layout -
-- (void)_commitUpdate {
-    // NSLog(@"%s",__func__);
-    
-    self.needUpdate = YES;
-    [self _update];
-    
-    /**
-     self.needUpdate = YES;
-
-     #if !TARGET_INTERFACE_BUILDER
-         [[QATextTransaction transactionWithTarget:self selector:@selector(_updateIfNeeded)] commit];
-     #else
-         [self _update];
-     #endif
-     */
-}
-- (void)_updateIfNeeded {
-    // NSLog(@"%s",__func__);
-    if (self.needUpdate) {
-        [self _update];
-    }
-}
-- (void)_update {
-    // NSLog(@"%s",__func__);
-    
-    self.needUpdate = NO;
-    if ([[NSThread currentThread] isMainThread]) {
-        [self.layer setNeedsDisplay];
-    }
-    else {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self.layer setNeedsDisplay];
-        });
     }
 }
 

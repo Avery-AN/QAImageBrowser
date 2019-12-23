@@ -1,5 +1,5 @@
 //
-//  NSMutableAttributedString+TextDraw.h
+//  QATextDraw.h
 //  TableView
 //
 //  Created by Avery An on 2019/12/23.
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSMutableAttributedString (TextDraw)
+@interface NSMutableAttributedString (QATextDraw)
 
 /**
  存储高亮文本(换行) (key:range - value:数组、存储换行的highlightText信息、数组中元素的个数代表highlightText在绘制过程中所占用的行数)

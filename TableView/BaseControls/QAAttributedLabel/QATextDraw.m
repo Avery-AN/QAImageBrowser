@@ -1,15 +1,14 @@
 //
-//  NSMutableAttributedString+TextDraw.m
+//  QATextDraw.m
 //  TableView
 //
 //  Created by Avery An on 2019/12/23.
 //  Copyright © 2019 Avery. All rights reserved.
 //
 
-#import "NSMutableAttributedString+TextDraw.h"
-#import "NSMutableAttributedString+QAAttributedString.h"
+#import "QATextDraw.h"
+#import "QAAttributedLabelConfig.h"
 #import "QATextRunDelegate.h"
-#import <objc/runtime.h>
 
 static inline CGFloat QAFlushFactorForTextAlignment(NSTextAlignment textAlignment) {
     switch (textAlignment) {
@@ -80,68 +79,6 @@ static inline CGFloat QAFlushFactorForTextAlignment(NSTextAlignment textAlignmen
         CFRelease(ctFramesetter);
     }
 }
-
-- (void)getSortedHighlightRanges:(NSMutableAttributedString *)attributedString {
-    // 先清空数据
-    if (!self.textNewlineDic) {
-        self.textNewlineDic = [NSMutableDictionary dictionary];
-    }
-    else {
-        [self.textNewlineDic removeAllObjects];
-    }
-    if (!self.highlightFrameDic) {
-        self.highlightFrameDic = [NSMutableDictionary dictionary];
-    }
-    else {
-        [self.highlightFrameDic removeAllObjects];
-    }
-    if (!self.highlightRanges_sorted) {
-        self.highlightRanges_sorted = [NSMutableArray array];
-    }
-    else {
-        [self.highlightRanges_sorted removeAllObjects];
-    }
-    if (!self.saveUnfinishedDic) {
-        self.saveUnfinishedDic = [NSMutableDictionary dictionary];
-    }
-    else {
-        [self.saveUnfinishedDic removeAllObjects];
-    }
-    if (!self.saveLineInfoDic) {
-        self.saveLineInfoDic = [NSMutableDictionary dictionary];
-    }
-    else {
-        [self.saveLineInfoDic removeAllObjects];
-    }
-    
-    // 保存高亮文案的highlightRange & highlightFont:
-    if (attributedString.textDic && attributedString.textDic.count > 0) {
-        NSArray *allkeys = [attributedString.textDic allKeys];
-        for (NSString *rangeKey in allkeys) { // highlightRanges & highlightFonts数组中的元素表示某一个高亮字符串的range与font (需要注意:数组中元素的index不能乱)
-            if (self.highlightRanges_sorted.count == 0) {
-                [self.highlightRanges_sorted addObject:rangeKey];
-            }
-            else {
-                NSRange range_current = NSRangeFromString(rangeKey);
-                int position = 0;
-                for (int k = 0; k < self.highlightRanges_sorted.count; k++) {
-                    NSRange range_previous = NSRangeFromString([self.highlightRanges_sorted objectAtIndex:k]);
-                    if (range_current.location > range_previous.location) {
-                        position++;
-                    }
-                }
-                
-                if (self.highlightRanges_sorted.count > position) {
-                    [self.highlightRanges_sorted insertObject:rangeKey atIndex:position];
-                }
-                else {
-                    [self.highlightRanges_sorted addObject:rangeKey];
-                }
-            }
-        }
-    }
-}
-
 - (int)drawAttributedTextWithContext:(CGContextRef)context
                          contentSize:(CGSize)size
                            wordSpace:(CGFloat)wordSpace
@@ -270,6 +207,67 @@ static inline CGFloat QAFlushFactorForTextAlignment(NSTextAlignment textAlignmen
 
 
 #pragma mark - Private Methods -
+- (void)getSortedHighlightRanges:(NSMutableAttributedString *)attributedString {
+    // 先清空数据
+    if (!self.textNewlineDic) {
+        self.textNewlineDic = [NSMutableDictionary dictionary];
+    }
+    else {
+        [self.textNewlineDic removeAllObjects];
+    }
+    if (!self.highlightFrameDic) {
+        self.highlightFrameDic = [NSMutableDictionary dictionary];
+    }
+    else {
+        [self.highlightFrameDic removeAllObjects];
+    }
+    if (!self.highlightRanges_sorted) {
+        self.highlightRanges_sorted = [NSMutableArray array];
+    }
+    else {
+        [self.highlightRanges_sorted removeAllObjects];
+    }
+    if (!self.saveUnfinishedDic) {
+        self.saveUnfinishedDic = [NSMutableDictionary dictionary];
+    }
+    else {
+        [self.saveUnfinishedDic removeAllObjects];
+    }
+    if (!self.saveLineInfoDic) {
+        self.saveLineInfoDic = [NSMutableDictionary dictionary];
+    }
+    else {
+        [self.saveLineInfoDic removeAllObjects];
+    }
+    
+    // 保存高亮文案的highlightRange & highlightFont:
+    if (attributedString.highlightTextDic && attributedString.highlightTextDic.count > 0) {
+        NSArray *allkeys = [attributedString.highlightTextDic allKeys];
+        for (NSString *rangeKey in allkeys) { // highlightRanges & highlightFonts数组中的元素表示某一个高亮字符串的range与font (需要注意:数组中元素的index不能乱)
+            if (self.highlightRanges_sorted.count == 0) {
+                [self.highlightRanges_sorted addObject:rangeKey];
+            }
+            else {
+                NSRange range_current = NSRangeFromString(rangeKey);
+                int position = 0;
+                for (int k = 0; k < self.highlightRanges_sorted.count; k++) {
+                    NSRange range_previous = NSRangeFromString([self.highlightRanges_sorted objectAtIndex:k]);
+                    if (range_current.location > range_previous.location) {
+                        position++;
+                    }
+                }
+                
+                if (self.highlightRanges_sorted.count > position) {
+                    [self.highlightRanges_sorted insertObject:rangeKey atIndex:position];
+                }
+                else {
+                    [self.highlightRanges_sorted addObject:rangeKey];
+                }
+            }
+        }
+    }
+}
+
 - (void)drawAttachmentContentInContext:(CGContextRef)context
                                ctframe:(CTFrameRef)ctFrame
                                   line:(CTLineRef)line
@@ -356,9 +354,9 @@ static inline CGFloat QAFlushFactorForTextAlignment(NSTextAlignment textAlignmen
             CGFloat offsetX = CTLineGetOffsetForStringIndex(line, runRange.location, NULL);
             
             // 获取高亮文案:
-            NSString *highlightText = [attributedString.textChangedDic valueForKey:rangeString];
+            NSString *highlightText = [attributedString.highlightTextChangedDic valueForKey:rangeString];
             if (!highlightText || highlightText.length == 0) {
-                highlightText = [attributedString.textDic valueForKey:rangeString];
+                highlightText = [attributedString.highlightTextDic valueForKey:rangeString];
                 if (!highlightText || highlightText.length == 0) {
                     continue;
                 }
@@ -393,7 +391,7 @@ static inline CGFloat QAFlushFactorForTextAlignment(NSTextAlignment textAlignmen
                     int position = i - 1;
                     NSString *rangeString_previous = [self.highlightRanges_sorted objectAtIndex:position];
                     NSRange highlightRange_previous = NSRangeFromString(rangeString_previous);
-                    NSString *highlightText_previous = [attributedString.textDic valueForKey:rangeString_previous];
+                    NSString *highlightText_previous = [attributedString.highlightTextDic valueForKey:rangeString_previous];
                     NSString *highlightText_previous_saved = [self.saveUnfinishedDic valueForKey:rangeString_previous];
                     if (highlightText_previous_saved) {
                         NSInteger length_previousSaved_last = highlightText_previous.length - highlightText_previous_saved.length;
