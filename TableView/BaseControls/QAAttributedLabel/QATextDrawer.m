@@ -418,6 +418,12 @@ static inline CGFloat QAFlushFactorForTextAlignment(NSTextAlignment textAlignmen
                     NSString *highlightText_previous = [attributedString.textDic valueForKey:rangeString_previous];
                     NSString *highlightText_previous_saved = [_saveUnfinishedDic valueForKey:rangeString_previous];
                     if (highlightText_previous_saved) {
+                        
+                        // 异常处理:
+                        if (checkBlock && checkBlock(attributedString.string)) {
+                            return -21;
+                        }
+                        
                         NSInteger length_previousSaved_last = highlightText_previous.length - highlightText_previous_saved.length;
                         NSRange subRange_previous = NSMakeRange(0, length_previousSaved_last);
                         NSString *subHighlightText = [currentRunString substringWithRange:subRange_previous];
@@ -636,7 +642,8 @@ static inline CGFloat QAFlushFactorForTextAlignment(NSTextAlignment textAlignmen
     }
     
     if (totalLength == highlightText.length) {
-        [_saveUnfinishedDic removeObjectForKey:NSStringFromRange(highlightRange)];
+        // [_saveUnfinishedDic removeObjectForKey:NSStringFromRange(highlightRange)];
+        [_saveUnfinishedDic removeAllObjects];
     }
     else if (subHighlightText) {
         [_saveUnfinishedDic setValue:subHighlightText forKey:NSStringFromRange(highlightRange)];

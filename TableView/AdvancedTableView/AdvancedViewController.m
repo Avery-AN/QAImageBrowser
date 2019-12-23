@@ -92,18 +92,23 @@
     if (originalDatas.count < maxConcurrentOperationCount) {
         maxConcurrentOperationCount = originalDatas.count;
     }
+    NSMutableArray *indexPaths = [NSMutableArray arrayWithCapacity:maxConcurrentOperationCount];
     [AdvancedCell getStytle:originalDatas maxConcurrentOperationCount:maxConcurrentOperationCount completion:^(NSInteger start, NSInteger end) {
-        NSLog(@"已获取到新数据: %ld - %ld", (long)start , (long)end);
+        // NSLog(@"已获取到新数据: %ld - %ld", (long)start , (long)end);
         
+        [indexPaths removeAllObjects];
         for (NSInteger i = start; i <= end; i++) {
             [self.showDatas addObject:[originalDatas objectAtIndex:i]];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+            [indexPaths addObject:indexPath];
         }
         if (self.tableView.superview == nil) {
             [self.view addSubview:self.tableView];
             // [self observerTableviewVelocity];
         }
         else {
-            [self.tableView reloadData];
+            // [self.tableView reloadData];
+            [self.tableView insertRowsAtIndexPaths:indexPaths withRowAnimation:UITableViewRowAnimationNone];
         }
     }];
 }

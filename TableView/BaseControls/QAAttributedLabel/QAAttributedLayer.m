@@ -24,6 +24,8 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
     NSRange _currentTapedRange;  // 当点击高亮文案时保存点击处的range
     __block NSDictionary *_currentTapedAttributeInfo;  // 当点击高亮文案时保存点击处的attributeInfo
     __block NSMutableArray *_currentTapedAttributeInfo_other;  // 当点击高亮文案时保存点击处文案里包含的其它高亮文本的attributeInfo (PS: 高亮文案中包含有搜索到的高亮文案)
+    
+    CFAbsoluteTime startTime_beginDraw;
 }
 @property (nonatomic, copy, nullable, readonly) NSMutableAttributedString *attributedText_backup;
 @property (nonatomic, copy, nullable, readonly) NSString *text_backup;
@@ -213,8 +215,7 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
     }
 
     /**
-     保存高亮相关信息(link & at & topic & Seemore)到attributedText中 (drawTextBackgroundWithAttributedString时使用、从内存的角度上
-     来说不太友好):
+     保存高亮相关信息(link & at & topic & Seemore)到attributedText中 (从内存的角度上来说不太友好):
      */
     attributedText.highlightRanges = highlightRanges;
     attributedText.highlightContents = highlightContents;
@@ -356,9 +357,10 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
     }
 }
 - (void)drawTextBackgroundWithAttributedString:(NSMutableAttributedString * _Nonnull)attributedString {
+    QAAttributedLabel *attributedLabel = (QAAttributedLabel *)self.delegate;
+    CGRect bounds = attributedLabel.bounds;
+    
     dispatch_async(QAAttributedLayerDrawQueue(), ^{
-        QAAttributedLabel *attributedLabel = (QAAttributedLabel *)self.delegate;
-        CGRect bounds = attributedLabel.bounds;
         CGFloat boundsWidth = bounds.size.width;
         CGFloat boundsHeight = bounds.size.height;
         
@@ -418,6 +420,8 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
 - (void)fillContents_async:(QAAttributedLabel *)attributedLabel {
     // NSLog(@"   %s",__func__);
 
+    startTime_beginDraw = CFAbsoluteTimeGetCurrent();
+    
     _drawState = QAAttributedLayer_State_Drawing;
     
     CGColorRef backgroundCgcolor = attributedLabel.backgroundColor.CGColor;
@@ -447,7 +451,8 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
                                     UIGraphicsEndImageContext();
                                     
                                     self->_drawState = QAAttributedLayer_State_Normal;
-                                } completion:^{
+                                } completion:^(NSMutableAttributedString *attributedText) {
+                                    NSLog(@"绘制完毕");
                                     __strong typeof(weakSelf) strongSelf = weakSelf;
                                     
                                     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
@@ -455,9 +460,20 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
                                     strongSelf.currentCGImage = (__bridge id _Nullable)(image.CGImage);
                                     UIGraphicsEndImageContext();
                                     
+                                    // 缓存
+                                    if (attributedText && image) {
+                                        dispatch_async(QAAttributedLayerDrawQueue(), ^{
+                                            [strongSelf cacheImage:image withIdentifier:attributedText];
+                                        });
+                                    }
+                                    
                                     dispatch_async(dispatch_get_main_queue(), ^{
                                         strongSelf.contents = strongSelf.currentCGImage;
                                         strongSelf->_drawState = QAAttributedLayer_State_Finished;
+                                        CFAbsoluteTime endTime = CFAbsoluteTimeGetCurrent();
+                                        CFAbsoluteTime loadTime = endTime - self->startTime_beginDraw;
+                                        NSLog(@"loadTime(coretextDraw): %f",loadTime);
+                                        NSLog(@" ");
                                     });
                                 }];
     });
@@ -489,7 +505,7 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
                                 } cancel:^{
                                     NSLog(@"绘制被取消!!!");
                                     UIGraphicsEndImageContext();
-                                } completion:^{
+                                } completion:^(NSMutableAttributedString *attributedText) {
                                     __strong typeof(weakSelf) strongSelf = weakSelf;
                                     
                                     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
@@ -500,15 +516,12 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
                                     strongSelf->_drawState = QAAttributedLayer_State_Finished;
                                 }];
 }
-- (void)fillContentsWithContext:(CGContextRef)context
-                          label:(QAAttributedLabel *)attributedLabel
-                     selfBounds:(CGRect)bounds
-            checkAttributedText:(BOOL(^)(NSString *content))checkBlock
-                         cancel:(void(^)(void))cancel
-                     completion:(void(^)(void))completion {
+- (void)getDrawAttributedTextWithLabel:(QAAttributedLabel *)attributedLabel
+                            selfBounds:(CGRect)bounds
+                   checkAttributedText:(BOOL(^)(NSString *content))checkBlock
+                            completion:(void(^)(NSMutableAttributedString *))completion {
     NSString *content = attributedLabel.text;
     CGFloat boundsWidth = bounds.size.width;
-    CGFloat boundsHeight = bounds.size.height;
     
     NSMutableAttributedString *attributedText = nil;
     if (attributedLabel.srcAttributedString && attributedLabel.attributedString && attributedLabel.attributedString.string.length > 0) {
@@ -516,6 +529,45 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
         if (self.renderText == nil) {
             self.renderText = attributedLabel.attributedString;
         }
+        
+        NSLog(@"[NSThread currentThread] (0): %@",[NSThread currentThread]);
+//        if (completion) {
+//            completion(attributedText);
+//        }
+        
+        
+        // 获取缓存:
+        NSLog(@"获取缓存");
+        __weak typeof(self) weakSelf = self;
+        [self getCacheWithIdentifier:attributedText
+                            finished:^(NSMutableAttributedString * _Nonnull identifier, UIImage * _Nullable image) {
+            __strong typeof(weakSelf) strongSelf = weakSelf;
+
+            NSLog(@"[NSThread currentThread] (1): %@",[NSThread currentThread]);
+
+            if (image) {   // Hit Cache
+                NSLog(@"    Hit Cache ~~~");
+
+                UIGraphicsEndImageContext();
+                strongSelf.currentCGImage = (__bridge id _Nullable)(image.CGImage);
+                strongSelf.contents = nil;
+                strongSelf.contents = strongSelf.currentCGImage;
+                strongSelf->_drawState = QAAttributedLayer_State_Finished;
+                CFAbsoluteTime endTime = CFAbsoluteTimeGetCurrent();
+                CFAbsoluteTime loadTime = endTime - strongSelf->startTime_beginDraw;
+                NSLog(@"loadTime(Mmap-Cache): %f",loadTime);
+                NSLog(@" ");
+                return;
+            }
+            else {   // Not Hit Cache
+                NSLog(@"   Not Hit Cache ~~~");
+
+                if (completion) {
+                    completion(attributedText);
+                }
+            }
+        }];
+        
         
         /*
          if (attributedLabel.attributedString) {
@@ -530,73 +582,104 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
          */
     }
     else {
+        NSLog(@"生成attributedText");
         attributedText = [self getAttributedStringWithString:content
                                                     maxWidth:boundsWidth];
         if (!attributedText) {
-            if (cancel) {
-                cancel();
-            }
             self->_attributedText_backup = attributedText;
+            if (completion) {
+                completion(nil);
+            }
             return;
         }
         
         self->_attributedText_backup = attributedText;
         self->_text_backup = nil;
+        
+        if (completion) {
+            completion(attributedText);
+        }
     }
-    
-    // 处理搜索结果:
-    if (attributedText.searchRanges && attributedText.searchRanges.count > 0) {
-        UIColor *textColor = [attributedText.searchAttributeInfo valueForKey:@"textColor"];
-        UIColor *textBackgroundColor = [attributedText.searchAttributeInfo valueForKey:@"textBackgroundColor"];
-        for (NSString *rangeString in attributedText.searchRanges) {
-            NSRange range = NSRangeFromString(rangeString);
-            int result = [self updateAttributeText:attributedText
-                                     withTextColor:textColor
-                               textBackgroundColor:textBackgroundColor
-                                             range:range];
-            if (result < 0) {
+}
+- (void)fillContentsWithContext:(CGContextRef)context
+                          label:(QAAttributedLabel *)attributedLabel
+                     selfBounds:(CGRect)bounds
+            checkAttributedText:(BOOL(^)(NSString *content))checkBlock
+                         cancel:(void(^)(void))cancel
+                     completion:(void(^)(NSMutableAttributedString *))completion {
+    __weak typeof(self) weakSelf = self;
+    [self getDrawAttributedTextWithLabel:attributedLabel
+                              selfBounds:bounds
+                     checkAttributedText:checkBlock
+                              completion:^(NSMutableAttributedString *attributedText) {
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        
+        if (!attributedText) {
+            if (cancel) {
+                cancel();
+            }
+            return;
+        }
+        else {
+            NSLog(@" 开始绘制 - attributedText");
+            CGFloat boundsWidth = bounds.size.width;
+            CGFloat boundsHeight = bounds.size.height;
+            
+            // 处理搜索结果:
+            if (attributedText.searchRanges && attributedText.searchRanges.count > 0) {
+                UIColor *textColor = [attributedText.searchAttributeInfo valueForKey:@"textColor"];
+                UIColor *textBackgroundColor = [attributedText.searchAttributeInfo valueForKey:@"textBackgroundColor"];
+                for (NSString *rangeString in attributedText.searchRanges) {
+                    NSRange range = NSRangeFromString(rangeString);
+                    int result = [strongSelf updateAttributeText:attributedText
+                                                   withTextColor:textColor
+                                             textBackgroundColor:textBackgroundColor
+                                                           range:range];
+                    if (result < 0) {
+                        if (cancel) {
+                            cancel();
+                        }
+                        return;
+                    }
+                }
+            }
+            
+            // 保存高亮相关信息(link & at & Topic & Seemore)到attributedText对应的属性中:
+            int saveResult = [strongSelf saveHighlightRanges:attributedText.highlightRanges
+                                           highlightContents:attributedText.highlightContents
+                                              truncationInfo:attributedText.truncationInfo
+                                             attributedLabel:attributedLabel
+                                            attributedString:attributedText];
+            if (saveResult < 0) {
                 if (cancel) {
                     cancel();
                 }
                 return;
             }
+            
+            CGSize contentSize = CGSizeMake(ceil(boundsWidth), ceil(boundsHeight));
+            NSInteger numberOfLines = attributedLabel.numberOfLines;
+            int drawResult = [strongSelf.textDrawer drawAttributedText:attributedText
+                                                               context:context
+                                                           contentSize:contentSize
+                                                             wordSpace:attributedLabel.wordSpace
+                                                      maxNumberOfLines:numberOfLines
+                                                         textAlignment:attributedLabel.textAlignment
+                                                        truncationText:attributedText.truncationInfo
+                                                     saveHighlightText:YES
+                                                            checkBlock:checkBlock];
+            if (drawResult < 0) {
+                if (cancel) {
+                    cancel();
+                }
+                return;
+            }
+            
+            if (completion) {
+                completion(attributedText);
+            }
         }
-    }
-    
-    // 保存高亮相关信息(link & at & Topic & Seemore)到attributedText对应的属性中:
-    int saveResult = [self saveHighlightRanges:attributedText.highlightRanges
-                             highlightContents:attributedText.highlightContents
-                                truncationInfo:attributedText.truncationInfo
-                               attributedLabel:attributedLabel
-                              attributedString:attributedText];
-    if (saveResult < 0) {
-        if (cancel) {
-            cancel();
-        }
-        return;
-    }
-    
-    CGSize contentSize = CGSizeMake(ceil(boundsWidth), ceil(boundsHeight));
-    NSInteger numberOfLines = attributedLabel.numberOfLines;
-    int drawResult = [self.textDrawer drawAttributedText:attributedText
-                                                 context:context
-                                             contentSize:contentSize
-                                               wordSpace:attributedLabel.wordSpace
-                                        maxNumberOfLines:numberOfLines
-                                           textAlignment:attributedLabel.textAlignment
-                                          truncationText:attributedText.truncationInfo
-                                       saveHighlightText:YES
-                                              checkBlock:checkBlock];
-    if (drawResult < 0) {
-        if (cancel) {
-            cancel();
-        }
-        return;
-    }
-    
-    if (completion) {
-        completion();
-    }
+    }];
 }
 - (void)getTapedTextColor:(UIColor * __strong *)tapedTextColor
      tapedBackgroundColor:(UIColor * __strong *)tapedBackgroundColor
