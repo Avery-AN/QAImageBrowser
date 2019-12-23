@@ -9,7 +9,7 @@
 #import "QAAttributedLayer.h"
 #import "QAAttributedLabel.h"
 #import "QATextLayout.h"
-#import "QATextDrawer.h"
+#import "NSMutableAttributedString+TextDraw.h"
 #import "QAAttributedLabelConfig.h"
 
 typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
@@ -97,7 +97,7 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
                                        isTopicHighlight:attributedLabel.topicHighlight
                                       highlightContents:&highlightContents
                                         highlightRanges:&highlightRanges];
-
+    
     // 生成NSMutableAttributedString:
     /* 转换UTF8
      [string stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];  // iOS 9以前
@@ -309,15 +309,13 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
     
     // 文案的绘制:
     NSInteger numberOfLines = attributedLabel.numberOfLines;
-    [self.textDrawer drawAttributedText:attributedText
-                                context:context
-                            contentSize:bounds.size
-                              wordSpace:attributedLabel.wordSpace
-                       maxNumberOfLines:numberOfLines
-                          textAlignment:attributedLabel.textAlignment
-                         truncationText:attributedText.truncationInfo
-                      saveHighlightText:NO
-                             checkBlock:nil];
+    [attributedText drawAttributedTextWithContext:context
+                                      contentSize:bounds.size
+                                        wordSpace:attributedLabel.wordSpace
+                                 maxNumberOfLines:numberOfLines
+                                    textAlignment:attributedLabel.textAlignment
+                                   truncationText:attributedText.truncationInfo
+                                saveHighlightText:NO];
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     self.currentCGImage = (__bridge id _Nullable)(image.CGImage);
@@ -377,15 +375,13 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
         
         CGSize contentSize = CGSizeMake(ceil(boundsWidth), ceil(boundsHeight));
         NSInteger numberOfLines = attributedLabel.numberOfLines;
-        [self.textDrawer drawAttributedText:attributedString
-                                    context:context
-                                contentSize:contentSize
-                                  wordSpace:attributedLabel.wordSpace
-                           maxNumberOfLines:numberOfLines
-                              textAlignment:attributedLabel.textAlignment
-                             truncationText:attributedString.truncationInfo
-                          saveHighlightText:YES
-                                 checkBlock:nil];
+        [attributedString drawAttributedTextWithContext:context
+                                            contentSize:contentSize
+                                              wordSpace:attributedLabel.wordSpace
+                                       maxNumberOfLines:numberOfLines
+                                          textAlignment:attributedLabel.textAlignment
+                                         truncationText:attributedString.truncationInfo
+                                      saveHighlightText:YES];
     });
 }
 
@@ -460,12 +456,17 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
                                     strongSelf.currentCGImage = (__bridge id _Nullable)(image.CGImage);
                                     UIGraphicsEndImageContext();
                                     
-                                    // 缓存
-                                    if (attributedText && image) {
-                                        dispatch_async(QAAttributedLayerDrawQueue(), ^{
-                                            [strongSelf cacheImage:image withIdentifier:attributedText];
-                                        });
-                                    }
+                                    
+                                    /**
+                                     // 缓存
+                                     if (attributedText && image) {
+                                         dispatch_async(QAAttributedLayerDrawQueue(), ^{
+                                             [strongSelf cacheImage:image withIdentifier:attributedText];
+                                         });
+                                     }
+                                     */
+                                    
+                                    
                                     
                                     dispatch_async(dispatch_get_main_queue(), ^{
                                         strongSelf.contents = strongSelf.currentCGImage;
@@ -516,91 +517,6 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
                                     strongSelf->_drawState = QAAttributedLayer_State_Finished;
                                 }];
 }
-- (void)getDrawAttributedTextWithLabel:(QAAttributedLabel *)attributedLabel
-                            selfBounds:(CGRect)bounds
-                   checkAttributedText:(BOOL(^)(NSString *content))checkBlock
-                            completion:(void(^)(NSMutableAttributedString *))completion {
-    NSString *content = attributedLabel.text;
-    CGFloat boundsWidth = bounds.size.width;
-    
-    NSMutableAttributedString *attributedText = nil;
-    if (attributedLabel.srcAttributedString && attributedLabel.attributedString && attributedLabel.attributedString.string.length > 0) {
-        attributedText = attributedLabel.attributedString;
-        if (self.renderText == nil) {
-            self.renderText = attributedLabel.attributedString;
-        }
-        
-        NSLog(@"[NSThread currentThread] (0): %@",[NSThread currentThread]);
-//        if (completion) {
-//            completion(attributedText);
-//        }
-        
-        
-        // 获取缓存:
-        NSLog(@"获取缓存");
-        __weak typeof(self) weakSelf = self;
-        [self getCacheWithIdentifier:attributedText
-                            finished:^(NSMutableAttributedString * _Nonnull identifier, UIImage * _Nullable image) {
-            __strong typeof(weakSelf) strongSelf = weakSelf;
-
-            NSLog(@"[NSThread currentThread] (1): %@",[NSThread currentThread]);
-
-            if (image) {   // Hit Cache
-                NSLog(@"    Hit Cache ~~~");
-
-                UIGraphicsEndImageContext();
-                strongSelf.currentCGImage = (__bridge id _Nullable)(image.CGImage);
-                strongSelf.contents = nil;
-                strongSelf.contents = strongSelf.currentCGImage;
-                strongSelf->_drawState = QAAttributedLayer_State_Finished;
-                CFAbsoluteTime endTime = CFAbsoluteTimeGetCurrent();
-                CFAbsoluteTime loadTime = endTime - strongSelf->startTime_beginDraw;
-                NSLog(@"loadTime(Mmap-Cache): %f",loadTime);
-                NSLog(@" ");
-                return;
-            }
-            else {   // Not Hit Cache
-                NSLog(@"   Not Hit Cache ~~~");
-
-                if (completion) {
-                    completion(attributedText);
-                }
-            }
-        }];
-        
-        
-        /*
-         if (attributedLabel.attributedString) {
-             attributedText = [self getAttributedStringWithAttributedString:attributedLabel.attributedString
-                                                                   maxWidth:boundsWidth];
-             
-             if (self.attributedText_backup) {
-                 self->_attributedText_backup = attributedText;
-                 self->_text_backup = nil;
-             }
-         }
-         */
-    }
-    else {
-        NSLog(@"生成attributedText");
-        attributedText = [self getAttributedStringWithString:content
-                                                    maxWidth:boundsWidth];
-        if (!attributedText) {
-            self->_attributedText_backup = attributedText;
-            if (completion) {
-                completion(nil);
-            }
-            return;
-        }
-        
-        self->_attributedText_backup = attributedText;
-        self->_text_backup = nil;
-        
-        if (completion) {
-            completion(attributedText);
-        }
-    }
-}
 - (void)fillContentsWithContext:(CGContextRef)context
                           label:(QAAttributedLabel *)attributedLabel
                      selfBounds:(CGRect)bounds
@@ -608,6 +524,7 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
                          cancel:(void(^)(void))cancel
                      completion:(void(^)(NSMutableAttributedString *))completion {
     __weak typeof(self) weakSelf = self;
+    
     [self getDrawAttributedTextWithLabel:attributedLabel
                               selfBounds:bounds
                      checkAttributedText:checkBlock
@@ -659,27 +576,114 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
             
             CGSize contentSize = CGSizeMake(ceil(boundsWidth), ceil(boundsHeight));
             NSInteger numberOfLines = attributedLabel.numberOfLines;
-            int drawResult = [strongSelf.textDrawer drawAttributedText:attributedText
-                                                               context:context
-                                                           contentSize:contentSize
-                                                             wordSpace:attributedLabel.wordSpace
-                                                      maxNumberOfLines:numberOfLines
-                                                         textAlignment:attributedLabel.textAlignment
-                                                        truncationText:attributedText.truncationInfo
-                                                     saveHighlightText:YES
-                                                            checkBlock:checkBlock];
+            int drawResult = [attributedText drawAttributedTextWithContext:context
+                                                               contentSize:contentSize
+                                                                 wordSpace:attributedLabel.wordSpace
+                                                          maxNumberOfLines:numberOfLines
+                                                             textAlignment:attributedLabel.textAlignment
+                                                            truncationText:attributedText.truncationInfo
+                                                         saveHighlightText:YES];
             if (drawResult < 0) {
                 if (cancel) {
                     cancel();
                 }
                 return;
             }
+
+            // 更新搜索数据到数据源中:
+            SEL appendDrawResultSelector = NSSelectorFromString(@"appendDrawResult:");
+            IMP appendDrawResultImp = [attributedLabel methodForSelector:appendDrawResultSelector];
+            void (*appendDrawResult)(id, SEL, NSMutableAttributedString *) = (void *)appendDrawResultImp;
+            appendDrawResult(attributedLabel, appendDrawResultSelector, attributedText);
             
             if (completion) {
                 completion(attributedText);
             }
         }
     }];
+}
+- (void)getDrawAttributedTextWithLabel:(QAAttributedLabel *)attributedLabel
+                            selfBounds:(CGRect)bounds
+                   checkAttributedText:(BOOL(^)(NSString *content))checkBlock
+                            completion:(void(^)(NSMutableAttributedString *))completion {
+    NSString *content = attributedLabel.text;
+    CGFloat boundsWidth = bounds.size.width;
+    
+    NSMutableAttributedString *attributedText = nil;
+    if (attributedLabel.srcAttributedString && attributedLabel.attributedString && attributedLabel.attributedString.string.length > 0) {
+        attributedText = attributedLabel.attributedString;
+        if (self.renderText == nil) {
+            self.renderText = attributedLabel.attributedString;
+        }
+        
+        if (completion) {
+            completion(attributedText);
+        }
+        
+        
+        /**
+         // 获取缓存 (mmap 会造成内存瞬间暴涨):
+         __weak typeof(self) weakSelf = self;
+         [self getCacheWithIdentifier:attributedText
+                             finished:^(NSMutableAttributedString * _Nonnull identifier, UIImage * _Nullable image) {
+             __strong typeof(weakSelf) strongSelf = weakSelf;
+
+             if (image) {   // Hit Cache
+                 NSLog(@"    Hit Cache ~~~");
+
+                 UIGraphicsEndImageContext();
+                 strongSelf.currentCGImage = (__bridge id _Nullable)(image.CGImage);
+                 strongSelf.contents = nil;
+                 strongSelf.contents = strongSelf.currentCGImage;
+                 strongSelf->_drawState = QAAttributedLayer_State_Finished;
+                 CFAbsoluteTime endTime = CFAbsoluteTimeGetCurrent();
+                 CFAbsoluteTime loadTime = endTime - strongSelf->startTime_beginDraw;
+                 NSLog(@"loadTime(Mmap-Cache): %f",loadTime);
+                 NSLog(@" ");
+                 return;
+             }
+             else {   // Not Hit Cache
+                 NSLog(@"   Not Hit Cache ~~~");
+
+                 if (completion) {
+                     completion(attributedText, YES);
+                 }
+             }
+         }];
+         */
+        
+        
+        /*
+         if (attributedLabel.attributedString) {
+             attributedText = [self getAttributedStringWithAttributedString:attributedLabel.attributedString
+                                                                   maxWidth:boundsWidth];
+             
+             if (self.attributedText_backup) {
+                 self->_attributedText_backup = attributedText;
+                 self->_text_backup = nil;
+             }
+         }
+         */
+    }
+    else {
+        NSLog(@"生成attributedText");
+        attributedText = [self getAttributedStringWithString:content
+                                                    maxWidth:boundsWidth];
+        if (!attributedText) {
+            self->_attributedText_backup = attributedText;
+            if (completion) {
+                completion(nil);
+            }
+            return;
+        }
+        
+        self->_attributedText_backup = attributedText;
+        self->_text_backup = nil;
+        
+        if (completion) {
+            completion(attributedText);
+        }
+    }
 }
 - (void)getTapedTextColor:(UIColor * __strong *)tapedTextColor
      tapedBackgroundColor:(UIColor * __strong *)tapedBackgroundColor
@@ -1076,7 +1080,7 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
 }
 
 /**
- 修改attributedText文案指定range处的背景色、并交由textDrawer进行绘制
+ 修改attributedText文案指定range处的背景色、并进行绘制
  
  @param attributedText 需要修改的attributedText
  @param range 需要修改的位置
@@ -1120,15 +1124,13 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
     // 文案的绘制:
     QAAttributedLabel *attributedLabel = (QAAttributedLabel *)self.delegate;
     NSInteger numberOfLines = attributedLabel.numberOfLines;
-    [self.textDrawer drawAttributedText:attributedText
-                                context:context
-                            contentSize:bounds.size
-                              wordSpace:attributedLabel.wordSpace
-                       maxNumberOfLines:numberOfLines
-                          textAlignment:attributedLabel.textAlignment
-                         truncationText:attributedText.truncationInfo
-                      saveHighlightText:NO
-                             checkBlock:nil];
+    [attributedText drawAttributedTextWithContext:context
+                                      contentSize:bounds.size
+                                        wordSpace:attributedLabel.wordSpace
+                                 maxNumberOfLines:numberOfLines
+                                    textAlignment:attributedLabel.textAlignment
+                                   truncationText:attributedText.truncationInfo
+                                saveHighlightText:NO];
     
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -1315,15 +1317,6 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
     }
     
     return attributedText;
-}
-
-
-#pragma mark - Property -
-- (QATextDrawer *)textDrawer {
-    if (!_textDrawer) {
-        _textDrawer = [QATextDrawer new];
-    }
-    return _textDrawer;
 }
 
 @end

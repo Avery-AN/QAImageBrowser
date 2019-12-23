@@ -309,7 +309,7 @@ typedef union {
                         self.avatar.image = roundedImage;
                     });
                 });
-                                      }];
+                }];
             }
             
             

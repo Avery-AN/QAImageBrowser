@@ -8,15 +8,10 @@
 
 #import "QAFastImageDiskCache.h"
 
-
-typedef void (^QAGetImageFormatBlock)(QAImageFormat *format);
-
-
 @interface QAFastImageDiskCache ()
 @property (nonatomic) NSMutableDictionary *formatDic;
+@property (nonatomic) NSMutableDictionary *requestBlocks;
 @property (nonatomic, copy) QAImageCacheCompletionBlock cacheCompletionBlock;
-@property (nonatomic, copy) QAImageRequestCompletionBlock requestCompletionBlock;
-@property (nonatomic, copy) QAGetImageFormatBlock getImageFormatBlock;
 @property (nonatomic) dispatch_queue_t queue;
 @property (nonatomic) dispatch_semaphore_t semaphore;
 @end
@@ -24,21 +19,35 @@ typedef void (^QAGetImageFormatBlock)(QAImageFormat *format);
 @implementation QAFastImageDiskCache
 
 #pragma mark - Life Cycle -
-+ (instancetype)sharedImageCache {
-    static dispatch_once_t onceToken;
-    static QAFastImageDiskCache *__imageCache = nil;
-    dispatch_once(&onceToken, ^{
-        __imageCache = [[[self class] alloc] init];
-        __imageCache.formatDic = [NSMutableDictionary dictionary];
-        __imageCache.queue = dispatch_queue_create("Avery.QAFastImageDiskCacheManager", DISPATCH_QUEUE_CONCURRENT);
-        __imageCache.semaphore = dispatch_semaphore_create(0);
-    });
-    
-    return __imageCache;
+- (instancetype)init {
+    if (self = [super init]) {
+        self.formatDic = [NSMutableDictionary dictionary];
+        self.requestBlocks = [NSMutableDictionary dictionary];
+        self.queue = dispatch_queue_create("Avery.QAFastImageDiskCacheManager", DISPATCH_QUEUE_CONCURRENT);
+        self.semaphore = dispatch_semaphore_create(0);
+    }
+    return self;
 }
+//+ (instancetype)sharedImageCache {
+//    static dispatch_once_t onceToken;
+//    static QAFastImageDiskCache *__imageCache = nil;
+//    dispatch_once(&onceToken, ^{
+//        __imageCache = [[[self class] alloc] init];
+//        __imageCache.formatDic = [NSMutableDictionary dictionary];
+//        __imageCache.requestBlocks = [NSMutableDictionary dictionary];
+//        __imageCache.queue = dispatch_queue_create("Avery.QAFastImageDiskCacheManager", DISPATCH_QUEUE_CONCURRENT);
+//        __imageCache.semaphore = dispatch_semaphore_create(0);
+//    });
+//
+//    return __imageCache;
+//}
 
 
 #pragma mark - Public Methods -
+- (void)clear {
+    [self.formatDic removeAllObjects];
+    [self.requestBlocks removeAllObjects];
+}
 - (void)cacheImage:(UIImage * _Nonnull)image
         identifier:(NSString * _Nonnull)identifier
        formatStyle:(QAImageFormatStyle)formatStyle {
@@ -54,20 +63,26 @@ typedef void (^QAGetImageFormatBlock)(QAImageFormat *format);
        formatStyle:(QAImageFormatStyle)formatStyle
         completion:(QAImageCacheCompletionBlock _Nullable)completion {
     @autoreleasepool {
-        if ([[NSThread currentThread] isMainThread]) {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [self cacheImageAction:image
-                            identifier:identifier
-                           formatStyle:formatStyle
-                            completion:completion];
-            });
-        }
-        else {
-            [self cacheImageAction:image
-                        identifier:identifier
-                       formatStyle:formatStyle
-                        completion:completion];
-        }
+        self.cacheCompletionBlock = completion;
+        
+        dispatch_async(self.queue, ^{
+            NSString *fileSavedPath = nil;
+            QAImageFormat *format = nil;
+            BOOL success = [self baseinfoProcess:image identifier:identifier formatStyle:formatStyle fileSavedPath:&fileSavedPath format:&format];
+            if (success == NO) {
+                return;
+            }
+            
+            QAImageFileManager *fileManager = [QAImageFileManager new];
+            [fileManager processCache:fileSavedPath
+                         imageFormart:format
+                                image:image];
+            if (self.cacheCompletionBlock) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.cacheCompletionBlock();
+                });
+            }
+        });
     }
 }
 - (void)cacheFixedSizeImage:(UIImage * _Nonnull)image
@@ -75,94 +90,33 @@ typedef void (^QAGetImageFormatBlock)(QAImageFormat *format);
                 formatStyle:(QAImageFormatStyle)formatStyle
                  completion:(QAImageCacheCompletionBlock _Nullable)completion {
     @autoreleasepool {
-        if ([[NSThread currentThread] isMainThread]) {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [self cacheFixedSizeImageAction:image
-                                     identifier:identifier
-                                    formatStyle:formatStyle
-                                     completion:completion];
-            });
-        }
-        else {
-            [self cacheFixedSizeImageAction:image
-                                 identifier:identifier
-                                formatStyle:formatStyle
-                                 completion:completion];
-        }
+        self.cacheCompletionBlock = completion;
+        
+        dispatch_async(self.queue, ^{
+            NSString *fileSavedPath = nil;
+            QAImageFormat *format = nil;
+            BOOL success = [self baseinfoProcess:image identifier:identifier formatStyle:formatStyle fileSavedPath:&fileSavedPath format:&format];
+            if (success == NO) {
+                return;
+            }
+            
+            QAImageFileManager *fileManager = [QAImageFileManager new];
+            [fileManager processFixedSizeCache:fileSavedPath
+                                  imageFormart:format
+                                         image:image];
+            if (self.cacheCompletionBlock) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.cacheCompletionBlock();
+                });
+            }
+        });
     }
 }
-
 - (void)requestDiskCachedImage:(NSString * _Nonnull)identifier
                     completion:(QAImageRequestCompletionBlock _Nullable)completion
                     failed:(QAImageRequestFailedBlock _Nullable)failed {
     @autoreleasepool {
-        if ([[NSThread currentThread] isMainThread]) {
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                [self requestDiskCachedImageAction:identifier completion:completion failed:failed];
-            });
-        }
-        else {
-            [self requestDiskCachedImageAction:identifier completion:completion failed:failed];
-        }
-    }
-}
-
-
-#pragma mark - Actions -
-- (void)cacheImageAction:(UIImage * _Nonnull)image
-              identifier:(NSString * _Nonnull)identifier
-             formatStyle:(QAImageFormatStyle)formatStyle
-              completion:(QAImageCacheCompletionBlock _Nullable)completion {
-    self.cacheCompletionBlock = completion;
-    dispatch_async(self.queue, ^{
-        NSString *fileSavedPath = nil;
-        QAImageFormat *format = nil;
-        BOOL success = [self baseinfoProcess:image identifier:identifier formatStyle:formatStyle fileSavedPath:&fileSavedPath format:&format];
-        if (success == NO) {
-            return;
-        }
-        
-        QAImageFileManager *fileManager = [QAImageFileManager new];
-        [fileManager processCache:fileSavedPath
-                     imageFormart:format
-                            image:image];
-        if (self.cacheCompletionBlock) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.cacheCompletionBlock();
-            });
-        }
-    });
-}
-- (void)cacheFixedSizeImageAction:(UIImage * _Nonnull)image
-                       identifier:(NSString * _Nonnull)identifier
-                      formatStyle:(QAImageFormatStyle)formatStyle
-                       completion:(QAImageCacheCompletionBlock _Nullable)completion {
-    self.cacheCompletionBlock = completion;
-    
-    dispatch_async(self.queue, ^{
-        NSString *fileSavedPath = nil;
-        QAImageFormat *format = nil;
-        BOOL success = [self baseinfoProcess:image identifier:identifier formatStyle:formatStyle fileSavedPath:&fileSavedPath format:&format];
-        if (success == NO) {
-            return;
-        }
-        
-        QAImageFileManager *fileManager = [QAImageFileManager new];
-        [fileManager processFixedSizeCache:fileSavedPath
-                              imageFormart:format
-                                     image:image];
-        if (self.cacheCompletionBlock) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.cacheCompletionBlock();
-            });
-        }
-    });
-}
-- (void)requestDiskCachedImageAction:(NSString * _Nonnull)identifier
-                          completion:(QAImageRequestCompletionBlock _Nullable)completion
-                          failed:(QAImageRequestFailedBlock _Nullable)failed {
-    @autoreleasepool {
-        self.requestCompletionBlock = completion;
+        [self.requestBlocks setObject:completion forKey:identifier];
 
         NSString *key = [identifier md5Hash];
         NSString *fileSavedPath = [QAImageCachePath getImageCachedFilePath:key];
@@ -184,15 +138,16 @@ typedef void (^QAGetImageFormatBlock)(QAImageFormat *format);
             QAImageFileManager *fileManager = [QAImageFileManager new];
             UIImage *image = [fileManager processRequest:fileSavedPath
                                              imageFormart:format];
-            
-            if (strongSelf.requestCompletionBlock) {
+            QAImageRequestCompletionBlock completionBlock = [strongSelf.requestBlocks objectForKey:identifier];
+            if (completionBlock) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [CATransaction setCompletionBlock:^{
                         NSLog(@" 清理垃圾......");
                         [fileManager clearTheBattlefield];
                     }];
 
-                    strongSelf.requestCompletionBlock(image);
+                    completionBlock(image);
+                    [self.requestBlocks removeObjectForKey:identifier];
                 });
             }
             else {
@@ -235,12 +190,6 @@ typedef void (^QAGetImageFormatBlock)(QAImageFormat *format);
         }
     });
 }
-- (void)testFormat:(QAImageFormat *)format {
-    if (self.getImageFormatBlock) {
-        self.getImageFormatBlock(format);
-    }
-}
-
 - (void)setFormat:(QAImageFormat * _Nonnull)format key:(NSString * _Nonnull)key {
     dispatch_barrier_async(self.queue, ^{
         [self.formatDic setObject:format forKey:key];

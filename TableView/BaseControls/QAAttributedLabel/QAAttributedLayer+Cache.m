@@ -12,23 +12,27 @@
 #import "QAFastImageDiskCache.h"
 #import "QAFastImageDiskCacheConfig.h"
 
+static QAFastImageDiskCache *_fastImageDiskCache = nil;
 static int CountLimit = 15;
 static NSCache *_imageCache = nil;
 static __weak QAAttributedLabel *currentLabel = nil;
-static __weak QAAttributedLayer *selfClass = nil;
 static void QARunLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info) {
     
-//    UITableView *tableView = (UITableView *)currentLabel.superview.superview.superview;
-//    NSArray *visibleCells = tableView.visibleCells;
-//    NSLog(@"visibleCells: %@",visibleCells);
-//    for (UITableViewCell *cell in visibleCells) {
-//        for (QAAttributedLabel *label in cell.contentView.subviews) {
-//            if ([label isKindOfClass:[QAAttributedLabel class]] && label.srcAttributedString) {
-//                QAAttributedLayer *layer = (QAAttributedLayer *)label.layer;
-//                [layer drawTextBackgroundWithAttributedString:label.attributedString];
-//            }
-//        }
-//    }
+    /**
+     if (currentLabel) {
+         UITableView *tableView = (UITableView *)currentLabel.superview.superview.superview;
+         NSArray *visibleCells = tableView.visibleCells;
+         for (UITableViewCell *cell in visibleCells) {
+             for (QAAttributedLabel *label in cell.contentView.subviews) {
+                 if ([label isKindOfClass:[QAAttributedLabel class]] && label.srcAttributedString) {
+                     QAAttributedLayer *layer = (QAAttributedLayer *)label.layer;
+                     [layer drawTextBackgroundWithAttributedString:label.attributedString];
+                 }
+             }
+         }
+         currentLabel = nil;
+     }
+     */
     
     
     /*
@@ -45,6 +49,7 @@ static void QARunLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopAc
 static void QAAttributedLayerCacheSetup() {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        _fastImageDiskCache = [[QAFastImageDiskCache alloc] init];
         _imageCache = [[NSCache alloc] init];
         [_imageCache setCountLimit:CountLimit];  // 设置最多缓存个数
         
@@ -61,7 +66,6 @@ static void QAAttributedLayerCacheSetup() {
 }
 
 @interface QAAttributedLayer ()
-//@property
 @end
 
 @implementation QAAttributedLayer (Cache)
@@ -75,8 +79,6 @@ static void QAAttributedLayerCacheSetup() {
     if (!_imageCache) {
         QAAttributedLayerCacheSetup();
     }
-    selfClass = self;
-    currentLabel = (QAAttributedLabel *)selfClass.delegate;
     
     NSString *key = identifier.string;
     
@@ -85,9 +87,9 @@ static void QAAttributedLayerCacheSetup() {
      */
     
     // 缓存到磁盘:
-    [[QAFastImageDiskCache sharedImageCache] cacheImage:image
-                                             identifier:key
-                                            formatStyle:QAImageFormatStyle_32BitBGRA];
+    [_fastImageDiskCache cacheImage:image
+                         identifier:key
+                        formatStyle:QAImageFormatStyle_32BitBGRA];
 }
 
 - (void)getCacheWithIdentifier:(NSMutableAttributedString * _Nonnull)identifier
@@ -95,10 +97,7 @@ static void QAAttributedLayerCacheSetup() {
     if (!_imageCache) {
         QAAttributedLayerCacheSetup();
     }
-    selfClass = self;
-    currentLabel = (QAAttributedLabel *)selfClass.delegate;
-
-    NSString *key = identifier.string;
+    currentLabel = (QAAttributedLabel *)self.delegate;
     
     /** 内存
      UIImage *image = [_imageCache objectForKey:key];
@@ -109,27 +108,20 @@ static void QAAttributedLayerCacheSetup() {
          finishedBlock(identifier, nil);
      }
      */
+    
 
     // 磁盘:
-    [[QAFastImageDiskCache sharedImageCache] requestDiskCachedImage:key
-                                                         completion:^(UIImage * _Nullable image) {
-
-        NSLog(@"[NSThread currentThread] (2): %@",[NSThread currentThread]);
-
+    NSString *key = identifier.string;
+    [_fastImageDiskCache requestDiskCachedImage:key
+                                     completion:^(UIImage * _Nullable image) {
         if (image && finishedBlock) {
-            NSLog(@"   +++++++++++ 0  image: %@",image);
             finishedBlock(identifier, image);
         }
         else if (finishedBlock) {
-            NSLog(@"   +++++++++++ 1  image: %@",image);
             finishedBlock(identifier, nil);
         }
     } failed:^(NSString * _Nonnull identifierString, NSError * _Nullable error) {
-
-        NSLog(@"[NSThread currentThread] (3): %@",[NSThread currentThread]);
-
         if (finishedBlock) {
-            NSLog(@"   +++++++++++ 2  image");
             finishedBlock(identifier, nil);
         }
     }];

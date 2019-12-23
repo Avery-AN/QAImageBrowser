@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface QAFastImageDiskCache : NSObject
 
-+ (instancetype)sharedImageCache;
+//+ (instancetype)sharedImageCache;
 
 - (void)cacheImage:(UIImage * _Nonnull)image
         identifier:(NSString * _Nonnull)identifier
@@ -40,6 +40,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)requestDiskCachedImage:(NSString * _Nonnull)identifier
                     completion:(QAImageRequestCompletionBlock _Nullable)completion
                         failed:(QAImageRequestFailedBlock _Nullable)failed;
+
+- (void)clear;
 
 @end
 

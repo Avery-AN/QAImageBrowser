@@ -51,7 +51,7 @@ void (*mmapAction)(id, SEL, NSString *, QAImageMmapStyle, NSInteger, NSString *,
 
 #pragma mark - Life Cycle -
 - (void)dealloc {
-    NSLog(@"%s", __func__);
+    // NSLog(@"%s", __func__);
     [self clearTheBattlefield];
 }
 - (instancetype)init {
@@ -138,6 +138,16 @@ void (*mmapAction)(id, SEL, NSString *, QAImageMmapStyle, NSInteger, NSString *,
                 bitmapInfo = [[array objectAtIndex:3] intValue];
                 bytesPerRow = [[array objectAtIndex:4] integerValue];
             }
+            
+            
+            /**
+             CGImageCreateWithJPEGDataProvider方法没办法处理字节对齐:
+             CGDataProviderRef dataProvider = CGDataProviderCreateWithData(NULL, strongSelf.bytes, strongSelf.imageLength, _QAReleaseImageData);
+             CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
+             CGImageRef imageRef = CGImageCreateWithJPEGDataProvider(dataProvider, NULL, NO, renderingIntent);
+            */
+            
+            
 
             // CGDataProviderCreateWithData(void * _Nullable info, const void * _Nullable data, size_t size, CGDataProviderReleaseDataCallback  _Nullable releaseData)
             CGDataProviderRef dataProvider = CGDataProviderCreateWithData(NULL, strongSelf.bytes, strongSelf.imageLength, _QAReleaseImageData);
@@ -189,18 +199,18 @@ void (*mmapAction)(id, SEL, NSString *, QAImageMmapStyle, NSInteger, NSString *,
                                  bitmapInfo:bitmapInfo
                                 bytesPerRow:bytesPerRow];
         [self flush];
-//        [self clearTheBattlefield];
+        [self clearTheBattlefield];
     }];
 }
 - (void)clearTheBattlefield {
     if (self.fileDescriptor >= 0) {
         int closeResult = close(self.fileDescriptor);  // 关闭文件描述符
-        NSLog(@"关闭文件描述符: %d",closeResult);
+        // NSLog(@"关闭文件描述符: %d",closeResult);
     }
     if (self.bytes) {
         int closeResult = munmap(self.bytes, self.totalLength);  // 解除映射
         self.bytes = NULL;
-        NSLog(@"解除映射: %d",closeResult);
+        // NSLog(@"解除映射: %d",closeResult);
     }
 }
 
@@ -313,10 +323,10 @@ void (*mmapAction)(id, SEL, NSString *, QAImageMmapStyle, NSInteger, NSString *,
 - (void)flush {
     int result = msync(self.bytes, self.totalLength, MS_SYNC);
     if (result) {
-        NSLog(@"flush时发生了异常");
+        // NSLog(@"flush时发生了异常");
     }
     else {
-        NSLog(@"flush数据成功");
+        // NSLog(@"flush数据成功");
     }
 }
 

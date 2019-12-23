@@ -9,8 +9,8 @@
 #import "QAAttributedLabel.h"
 #import "QAAttributedLayer.h"
 #import "QATextLayout.h"
-#import "QATextDrawer.h"
 #import "QATextTransaction.h"
+#import "NSMutableAttributedString+TextDraw.h"
 
 
 #define LinkHighlight_MASK          (1 << 0)  // 0000 0001
@@ -140,7 +140,7 @@ static void *TouchingContext = &TouchingContext;
     // 处理"...查看全文":
     NSMutableAttributedString *showingAttributedText = self.attributedString;
     if (self.numberOfLines != 0 && self.showMoreText && showingAttributedText.showMoreTextEffected) {
-        NSDictionary *highlightFrameDic = layer.textDrawer.highlightFrameDic; // (key:range - value:CGRect-array)
+        NSDictionary *highlightFrameDic = self.attributedString.highlightFrameDic; // (key:range - value:CGRect-array)
         NSString *truncationRangeKey = [showingAttributedText.truncationInfo valueForKey:@"truncationRange"];
         if (truncationRangeKey) {
             NSRange truncationRange = NSRangeFromString(truncationRangeKey);
@@ -163,7 +163,7 @@ static void *TouchingContext = &TouchingContext;
     // 处理高亮文案的点击效果:
     if (self.atHighlight || self.linkHighlight || self.topicHighlight) {
         // 获取self的属性:
-        NSDictionary *highlightFrameDic = layer.textDrawer.highlightFrameDic; // (key:range - value:CGRect-array)
+        NSDictionary *highlightFrameDic = self.attributedString.highlightFrameDic; // (key:range - value:CGRect-array)
         for (NSString *key in highlightFrameDic) {
             NSArray *highlightRects = [highlightFrameDic valueForKey:key];
 
@@ -317,11 +317,13 @@ static void *TouchingContext = &TouchingContext;
         return;
     }
     
-    QAAttributedLayer *layer = (QAAttributedLayer *)self.layer;
-    layer.contents = (__bridge id _Nullable)(image.CGImage);
-    
-    // 后台绘制attributedString (作用是:在layer.textDrawer中保存highlightFrameDic的值以供点击高亮文本时使用)
-    [layer drawTextBackgroundWithAttributedString:attributedString];
+    // 后台绘制attributedString (作用是得到highlightFrameDic的值以供点击高亮文本时使用)
+    if (!attributedString.highlightFrameDic || attributedString.highlightFrameDic.count == 0) {
+        QAAttributedLayer *layer = (QAAttributedLayer *)self.layer;
+        layer.contents = (__bridge id _Nullable)(image.CGImage);
+        
+        [layer drawTextBackgroundWithAttributedString:attributedString];
+    }
 }
 - (void)searchTexts:(NSArray * _Nonnull)texts resetSearchResultInfo:(NSDictionary * _Nullable (^_Nullable)(void))searchResultInfo {
     if (!texts || texts.count == 0) {
@@ -363,6 +365,13 @@ static void *TouchingContext = &TouchingContext;
     
     _srcAttributedString.searchAttributeInfo = attributedText.searchAttributeInfo;
     _srcAttributedString.searchRanges = attributedText.searchRanges;
+}
+- (void)appendDrawResult:(NSMutableAttributedString *)attributedText {
+    /**
+     若QAAttributedLabel的attributedString属性使用的是strong、则无需再在此方法中做处理
+     */
+    _srcAttributedString.textNewlineDic = attributedText.textNewlineDic;
+    _srcAttributedString.highlightFrameDic = attributedText.highlightFrameDic;
 }
 - (CGSize)getContentSize {
     NSMutableAttributedString *attributedText;
