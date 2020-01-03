@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BB2FF43623A738820033F1D6 /* QAImageBroeserDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2FF43523A738820033F1D6 /* QAImageBroeserDownloadManager.m */; };
+		BB2FF43623A738820033F1D6 /* QAImageBrowserDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2FF43523A738820033F1D6 /* QAImageBrowserDownloadManager.m */; };
 		BB48B567239F431D005D53A3 /* QAImageBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48B566239F431D005D53A3 /* QAImageBrowserCell.m */; };
 		BB48B56A239F434A005D53A3 /* QAImageBrowserLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48B569239F434A005D53A3 /* QAImageBrowserLayout.m */; };
 		BB4EB6B723AF040900E17966 /* QAAttributedLayer+Cache.m in Sources */ = {isa = PBXBuildFile; fileRef = BB4EB6B623AF040900E17966 /* QAAttributedLayer+Cache.m */; };
@@ -76,8 +76,8 @@
 /* Begin PBXFileReference section */
 		175F2055E5583335E94BE624 /* Pods_TableView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TableView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62D176DA0D2F114333645CB8 /* Pods-TableView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TableView.debug.xcconfig"; path = "Target Support Files/Pods-TableView/Pods-TableView.debug.xcconfig"; sourceTree = "<group>"; };
-		BB2FF43423A738820033F1D6 /* QAImageBroeserDownloadManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QAImageBroeserDownloadManager.h; sourceTree = "<group>"; };
-		BB2FF43523A738820033F1D6 /* QAImageBroeserDownloadManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QAImageBroeserDownloadManager.m; sourceTree = "<group>"; };
+		BB2FF43423A738820033F1D6 /* QAImageBrowserDownloadManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QAImageBrowserDownloadManager.h; sourceTree = "<group>"; };
+		BB2FF43523A738820033F1D6 /* QAImageBrowserDownloadManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QAImageBrowserDownloadManager.m; sourceTree = "<group>"; };
 		BB48B565239F431D005D53A3 /* QAImageBrowserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QAImageBrowserCell.h; sourceTree = "<group>"; };
 		BB48B566239F431D005D53A3 /* QAImageBrowserCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QAImageBrowserCell.m; sourceTree = "<group>"; };
 		BB48B568239F434A005D53A3 /* QAImageBrowserLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QAImageBrowserLayout.h; sourceTree = "<group>"; };
@@ -295,8 +295,8 @@
 			children = (
 				BB7BECC32390E40C00688028 /* QAImageBrowserManager.h */,
 				BB7BECC22390E40C00688028 /* QAImageBrowserManager.m */,
-				BB2FF43423A738820033F1D6 /* QAImageBroeserDownloadManager.h */,
-				BB2FF43523A738820033F1D6 /* QAImageBroeserDownloadManager.m */,
+				BB2FF43423A738820033F1D6 /* QAImageBrowserDownloadManager.h */,
+				BB2FF43523A738820033F1D6 /* QAImageBrowserDownloadManager.m */,
 				BB7BECE82395022D00688028 /* QAImageProcesser.h */,
 				BB7BECE92395022D00688028 /* QAImageProcesser.m */,
 			);
@@ -666,7 +666,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BB2FF43623A738820033F1D6 /* QAImageBroeserDownloadManager.m in Sources */,
+				BB2FF43623A738820033F1D6 /* QAImageBrowserDownloadManager.m in Sources */,
 				BB9F6C0A23838A7000F05116 /* AppDelegate.m in Sources */,
 				BB9F6C7623838BEB00F05116 /* UIImage+DecodeImage.m in Sources */,
 				BB9F6C7E23838BEB00F05116 /* QATextLayout.m in Sources */,

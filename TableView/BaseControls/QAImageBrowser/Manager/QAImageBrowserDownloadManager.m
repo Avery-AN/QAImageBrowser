@@ -1,23 +1,23 @@
 //
-//  QAImageBroeserDownloadManager.m
+//  QAImageBrowserDownloadManager.m
 //  TableView
 //
 //  Created by Avery An on 2019/12/16.
 //  Copyright © 2019 Avery. All rights reserved.
 //
 
-#import "QAImageBroeserDownloadManager.h"
+#import "QAImageBrowserDownloadManager.h"
 
 static int MaxDownloadingCounts = 3;
 
-@interface QAImageBroeserDownloadManager ()
+@interface QAImageBrowserDownloadManager ()
 @property (nonatomic) NSMutableDictionary *allTokens;
 @property (nonatomic) NSMutableDictionary *allFinishedBlocks;
 @property (nonatomic) NSMutableDictionary *allFailedBlocks;
 @property (nonatomic) NSMutableArray *allUrls;
 @end
 
-@implementation QAImageBroeserDownloadManager
+@implementation QAImageBrowserDownloadManager
 
 #pragma mark - Life Cycle -
 - (void)dealloc {
@@ -40,8 +40,8 @@ static int MaxDownloadingCounts = 3;
  通过imageUrl获取image
  */
 - (void)queryImageWithUrl:(NSURL *)imageUrl
-                 finished:(QAImageBroeserDownloadManagerFinishedBlock)finishedBlock
-                   failed:(QAImageBroeserDownloadManagerFailedBlock)failedBlock {
+                 finished:(QAImageBrowserDownloadManagerFinishedBlock)finishedBlock
+                   failed:(QAImageBrowserDownloadManagerFailedBlock)failedBlock {
     if (!imageUrl || imageUrl.absoluteString.length == 0) {
         if (failedBlock) {
             NSDictionary *errorInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"imageUrl入参有误", @"info", nil];
@@ -90,8 +90,8 @@ static int MaxDownloadingCounts = 3;
 
 #pragma mark - Private Methods -
 - (void)getImageWithUrl:(NSURL *)imageUrl
-               finished:(QAImageBroeserDownloadManagerFinishedBlock)finishedBlock
-                 failed:(QAImageBroeserDownloadManagerFailedBlock)failedBlock {
+               finished:(QAImageBrowserDownloadManagerFinishedBlock)finishedBlock
+                 failed:(QAImageBrowserDownloadManagerFailedBlock)failedBlock {
     UIImage *image_memory = [[SDImageCache sharedImageCache] imageFromMemoryCacheForKey:imageUrl.absoluteString];
     if (!image_memory) {
         NSString *path = [[SDImageCache sharedImageCache] defaultCachePathForKey:imageUrl.absoluteString];
@@ -141,14 +141,14 @@ static int MaxDownloadingCounts = 3;
         
     } completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, BOOL finished) {
         if (error) {
-            QAImageBroeserDownloadManagerFailedBlock failedBlock = [self.allFailedBlocks objectForKey:imageUrl.absoluteString];
+            QAImageBrowserDownloadManagerFailedBlock failedBlock = [self.allFailedBlocks objectForKey:imageUrl.absoluteString];
             if (failedBlock) {
                 failedBlock(imageUrl, error);
                 [self cleanForUrlString:imageUrl.absoluteString];
             }
         }
         else {
-            QAImageBroeserDownloadManagerFinishedBlock finishedBlock = [self.allFinishedBlocks objectForKey:imageUrl.absoluteString];
+            QAImageBrowserDownloadManagerFinishedBlock finishedBlock = [self.allFinishedBlocks objectForKey:imageUrl.absoluteString];
             if (finishedBlock) {
                 finishedBlock(imageUrl, image);
                 [self cleanForUrlString:imageUrl.absoluteString];
@@ -161,7 +161,7 @@ static int MaxDownloadingCounts = 3;
 - (void)cleanForUrlString:(NSString *)imageUrlString {
     SDWebImageDownloadToken *downLoadToken = [self.allTokens objectForKey:imageUrlString];
     [downLoadToken cancel];
-    QAImageBroeserDownloadManagerFailedBlock failedBlock = (QAImageBroeserDownloadManagerFailedBlock)[self.allFailedBlocks objectForKey:imageUrlString];
+    QAImageBrowserDownloadManagerFailedBlock failedBlock = (QAImageBrowserDownloadManagerFailedBlock)[self.allFailedBlocks objectForKey:imageUrlString];
     if (failedBlock) {
         NSDictionary *errorInfo = [NSDictionary dictionaryWithObjectsAndKeys:@"下载被取消", @"info", nil];
         NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorUnknown userInfo:errorInfo];

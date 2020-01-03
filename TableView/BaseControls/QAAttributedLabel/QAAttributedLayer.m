@@ -500,7 +500,7 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
                                     // 检查绘制是否应该被取消:
                                     return [strongSelf isCancelByCheckingContent:content];
                                 } cancel:^{
-                                    NSLog(@"绘制被取消!!!");
+                                    // NSLog(@"绘制被取消!!!");
                                     UIGraphicsEndImageContext();
                                 } completion:^(NSMutableAttributedString *attributedText) {
                                     __strong typeof(weakSelf) strongSelf = weakSelf;
@@ -662,7 +662,7 @@ typedef NS_ENUM(NSUInteger, QAAttributedLayer_State) {
          */
     }
     else {
-        NSLog(@"生成attributedText");
+        // NSLog(@"生成attributedText");
         attributedText = [self getAttributedStringWithString:content
                                                     maxWidth:boundsWidth];
         if (!attributedText) {
