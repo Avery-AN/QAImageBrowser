@@ -36,7 +36,7 @@
 @property (nonatomic, strong) NSMutableDictionary * _Nullable highlightTextTypeDic;
 
 /**
-是否绘制了"seeMoreText"文本、YES表示已绘制
+是否需要显示"seeMoreText"文本、YES表示需要显示
 */
 @property (nonatomic, assign) BOOL showMoreTextEffected;
 
