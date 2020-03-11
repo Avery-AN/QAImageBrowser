@@ -17,11 +17,11 @@
 
 
 #pragma MARK - Property -
-- (QAAttributedLabel *)styleLabel {
+- (QARichTextLabel *)styleLabel {
     if (!_styleLabel) {
         NSInteger content_width = UIWidth - Avatar_left_gap - Avatar_left_gap;
         NSInteger content_height = 15;
-        _styleLabel = [[QAAttributedLabel alloc] initWithFrame:CGRectMake(0, 0, content_width, content_height)];
+        _styleLabel = [[QARichTextLabel alloc] initWithFrame:CGRectMake(Avatar_left_gap, 0, content_width, content_height)];
         _styleLabel.backgroundColor = [UIColor whiteColor];
         _styleLabel.font = [UIFont systemFontOfSize:18];
 //        _styleLabel.font = [UIFont fontWithName:@"AvenirNext-HeavyItalic" size:20];
@@ -47,7 +47,7 @@
         _styleLabel.highLightTexts = [NSArray arrayWithObjects:@"大量添加控件",@"直接绘制", nil];
         _styleLabel.highlightTextColor = [UIColor purpleColor];
         _styleLabel.highlightTapedTextColor = [UIColor greenColor];
-//        _styleLabel.highlightTapedBackgroundColor = [UIColor grayColor];
+        _styleLabel.highlightTapedBackgroundColor = [UIColor lightGrayColor];
         _styleLabel.highlightAtTextColor = [UIColor greenColor];
         _styleLabel.highlightLinkTextColor = [UIColor orangeColor];
         _styleLabel.highlightTopicTextColor = [UIColor magentaColor];

@@ -26,7 +26,7 @@
         CGRect nameFrame = CGRectMake(startX, Avatar_top_gap, Title_width, Title_height);
         [dic setValue:[NSValue valueWithCGRect:nameFrame] forKey:@"name-frame"];
         NSMutableDictionary *nameDic = [NSMutableDictionary dictionaryWithCapacity:0];
-        [nameDic setValue:[UIFont systemFontOfSize:12] forKey:@"font"];
+        [nameDic setValue:[UIFont systemFontOfSize:14] forKey:@"font"];
         [nameDic setValue:HEXColor(@"333333") forKey:@"textColor"];
         [dic setValue:nameDic forKey:@"name-style"];
 
@@ -34,7 +34,7 @@
         CGRect descFrame = CGRectMake(startX, Avatar_top_gap+AvatarSize-Desc_height, Title_width, Desc_height);
         [dic setValue:[NSValue valueWithCGRect:descFrame] forKey:@"desc-frame"];
         NSMutableDictionary *descDic = [NSMutableDictionary dictionaryWithCapacity:0];
-        [descDic setValue:[UIFont systemFontOfSize:12] forKey:@"font"];
+        [descDic setValue:[UIFont systemFontOfSize:14] forKey:@"font"];
         [descDic setValue:HEXColor(@"666666") forKey:@"textColor"];
         [dic setValue:descDic forKey:@"desc-style"];
 
@@ -54,7 +54,7 @@
             [datas addObject:dic];
         }
         if (i % 10 == 1) {
-            [dic setValue:@"https://upload-images.jianshu.io/upload_images/14892748-590eb681e5adfa96" forKey:@"avatar"];
+            [dic setValue:@"https://upload-images.jianshu.io/upload_images/18224698-380ec562c8230618.png" forKey:@"avatar"];
 
             NSString *baseString = [NSString stringWithFormat:@"哈哈哈哈哈哈哈 - %d;",i];
             for (int j = 0; j < i; j++) {
@@ -69,7 +69,7 @@
             [datas addObject:dic];
         }
         if (i % 10 == 2) {
-            [dic setValue:@"https://upload-images.jianshu.io/upload_images/8666040-e168249b5659f7b1.jpeg" forKey:@"avatar"];
+            [dic setValue:@"https://upload-images.jianshu.io/upload_images/15705790-d7125d495dea81ea" forKey:@"avatar"];
 
             NSString *baseString = [NSString stringWithFormat:@"哈哈哈哈哈哈哈 - %d;",i];
             for (int j = 0; j < i; j++) {
@@ -81,7 +81,7 @@
             [datas addObject:dic];
         }
         if (i % 10 == 3) {
-            [dic setValue:@"https://upload-images.jianshu.io/upload_images/17788728-c70af7cb2d08d901.jpg" forKey:@"avatar"];
+            [dic setValue:@"https://upload-images.jianshu.io/upload_images/21611422-50cd464a589b4cd4" forKey:@"avatar"];
 
             NSString *baseString = [NSString stringWithFormat:@"哈哈哈哈哈哈哈 - %d;",i];
             for (int j = 0; j < i; j++) {
@@ -94,7 +94,7 @@
             [datas addObject:dic];
         }
         if (i % 10 == 4) {
-            [dic setValue:@"https://upload-images.jianshu.io/upload_images/15705790-d7125d495dea81ea" forKey:@"avatar"];
+            [dic setValue:@"https://upload-images.jianshu.io/upload_images/22045084-93437dae965a8af5.jpeg" forKey:@"avatar"];
 
             content = [NSString stringWithFormat:@"%@ 这里是第\n【%d】\n条数据！", @" hi~各位!具体代码详见: https://github.com/Avery-AN", i];
             [dic setValue:content forKey:@"content"];
@@ -102,7 +102,7 @@
             [datas addObject:dic];
         }
         if (i % 10 == 5) {
-            [dic setValue:@"https://upload-images.jianshu.io/upload_images/6337952-002bf5cec6ebd442.jpg" forKey:@"avatar"];
+            [dic setValue:@"https://upload-images.jianshu.io/upload_images/18224698-044f07dfdea3350c.png" forKey:@"avatar"];
 
             NSString *baseString = [NSString stringWithFormat:@"哈哈哈哈哈哈哈 - %d;",i];
             for (int j = 0; j < i; j++) {
@@ -126,7 +126,7 @@
             [datas addObject:dic];
         }
         if (i % 10 == 7) {
-            [dic setValue:@"https://upload-images.jianshu.io/upload_images/11027481-3c3e53c8143024b3.jpg" forKey:@"avatar"];
+            [dic setValue:@"https://upload-images.jianshu.io/upload_images/169425-211781b78762cb80" forKey:@"avatar"];
             
             content = [NSString stringWithFormat:@"【%d】%@", i, @"mmap是一种内存映射文件的方法，即将一个文件或者其它对象映射到进程的地址空间，实现文件磁盘地址和进程虚拟地址空间中一段虚拟地址的一一对映关系。实现这样的映射关系后，进程就可以采用指针的方式读写操作这一段内存，而系统会自动回写脏页面到对应的文件磁盘上，即完成了对文件的操作而不必再调用read,write等系统调用函数。相反，内核空间对这段区域的修改也直接反映用户空间，从而可以实现不同进程间的文件共享。"];
             [dic setValue:content forKey:@"content"];
@@ -134,7 +134,7 @@
             [datas addObject:dic];
         }
         if (i % 10 == 8) {
-            [dic setValue:@"https://upload-images.jianshu.io/upload_images/2748485-8caa321e4f1aadf5" forKey:@"avatar"];
+            [dic setValue:@"https://upload-images.jianshu.io/upload_images/21611422-97a219f4fca94a19" forKey:@"avatar"];
             
             content = [NSString stringWithFormat:@"【%d】%@", i, @"mmap适用场景:\n(1) 有一个大file、你需要随时或者多次访问其内容。\n(2) 有一个小的file、你需要一次读入并且会频繁访问。这最适合大小不超过几个虚拟内存页面的文件。\n(3) 缓存一个文件的某一部分，无需映射整个文件，这样可以节省内存空间。"];
             [dic setValue:content forKey:@"content"];
@@ -169,13 +169,13 @@
         NSMutableDictionary *dic = [datas objectAtIndex:1];
         [dic setValue:@"https://qq.yh31.com/tp/zjbq/201711142021166458.gif" forKey:@"contentImageView"];
         NSString *content = [dic valueForKey:@"content"];
-        content = [content stringByAppendingString:@"滑动时按需加载，这个在大量图片展示，网络加载的时候很管用！@Avery-AN（SDWebImage已经实现异步加载，配合这条性能杠杠的）。对象的调整也经常是消耗CPU资源的地方。@这里是另外的一个需要注意的地方CALayer:CALayer内部并没有属性，当调用属性方法时，它内部是通过运行时resolveInstanceMethod为对象临时添加一个方法，哈哈哈😁❄️🌧🐟🌹@这是另外的一个人、并把对应属性值保存到内部的一个Dictionary里，同时还会通知delegate、创建动画等等，非常消耗资源。UIView的关于显示相关的属性（比如frame/bounds/transform）等实际上都是CALayer属性映射来的，所以对UIView的这些属性进行调整时，消耗的资源要远大于一般的属性。对此你在应用中，应该尽量减少不必要的属性修改。当视图层次调整时，UIView、CALayer之间会出现很多方法调用与通知，所以在优化性能时，应该尽量避免调整视图层次、添加和移除视图。"];
+        content = [content stringByAppendingString:@"滑动时按需加载，这个在大量图片展示，网络加载的时候很管用！@Avery-AN（SDWebImage已经实现异步加载，配合这条性能杠杠的）。对象的调整也经常是消耗 CPU 资源的地方。@这里是另外的一个需要注意的地方 CALayer:CALayer 内部并没有属性，当调用属性方法时，它内部是通过运行时 resolveInstanceMethod 为对象临时添加一个方法，哈哈哈😁❄️🌧🐟🌹@这是另外的一个人、并把对应属性值保存到内部的一个 Dictionary 里，同时还会通知 delegate、创建动画等等，非常消耗资源。UIView 的关于显示相关的属性（比如 frame/bounds/transform）等实际上都是 CALayer 属性映射来的，所以对 UIView 的这些属性进行调整时，消耗的资源要远大于一般的属性。对此你在应用中，应该尽量减少不必要的属性修改。当视图层次调整时，UIView、CALayer 之间会出现很多方法调用与通知，所以在优化性能时，应该尽量避免调整视图层次、添加和移除视图。"];
         [dic setValue:content forKey:@"content"];
 
 
         dic = [datas objectAtIndex:4];
         content = [dic valueForKey:@"content"];
-        content = [content stringByAppendingString:@"尽量少用addView给Cell动态添加View，可以初始化时就添加，然后通过hide来控制是否显示。如果一个界面中包含大量文本（比如微博微信朋友圈等），文本的宽高计算会占用很大一部分资源，并且不可避免。如果你对文本显示没有特殊要求，可以参考下 UILabel 内部的实现方式：用 [NSAttributedString boundingRectWithSize:options:context:] 来计算文本宽高，用 -[NSAttributedString drawWithRect:options:context:]来绘制文本。尽管这两个方法性能不错，但仍旧需要放到后台线程进行以避免阻塞主线程。如果你用CoreText绘制文本，那就可以先生成CoreText排版对象，然后自己计算了，并且CoreText对象还能保留以供稍后绘制使用。屏幕上能看到的所有文本内容控件，包括UIWebView，在底层都是通过CoreText排版、绘制为Bitmap显示的。常见的文本控件（UILabel、UITextView等），其排版和绘制都是在主线程进行的，当显示大量文本时，CPU的压力会非常大。对此解决方案只有一个，那就是自定义文本控件，用TextKit或最底层的CoreText对文本异步绘制。尽管这实现起来非常麻烦，但其带来的优势也非常大，CoreText对象创建好后，能直接获取文本的宽高等信息，避免了多次计算（调整 UILabel 大小时算一遍、UILabel 绘制时内部再算一遍）;CoreText 对象占用内存较少，可以缓存下来以备稍后多次渲染。"];
+        content = [content stringByAppendingString:@"尽量少用addView给Cell动态添加View，可以初始化时就添加，然后通过hide来控制是否显示。如果一个界面中包含大量文本（比如微博微信朋友圈等），文本的宽高计算会占用很大一部分资源，并且不可避免。如果你对文本显示没有特殊要求，可以参考下 UILabel 内部的实现方式：用 [NSAttributedString boundingRectWithSize:options:context:] 来计算文本宽高，用 -[NSAttributedString drawWithRect:options:context:] 来绘制文本。尽管这两个方法性能不错，但仍旧需要放到后台线程进行以避免阻塞主线程。如果你用 CoreText 绘制文本，那就可以先生成 CoreText 排版对象，然后自己计算了，并且 CoreText 对象还能保留以供稍后绘制使用。屏幕上能看到的所有文本内容控件，包括 UIWebView，在底层都是通过 CoreText 排版、绘制为 Bitmap 显示的。常见的文本控件 （UILabel、UITextView 等），其排版和绘制都是在主线程进行的，当显示大量文本时，CPU 的压力会非常大。对此解决方案只有一个，那就是自定义文本控件，用 TextKit 或最底层的 CoreText 对文本异步绘制。尽管这实现起来非常麻烦，但其带来的优势也非常大，CoreText 对象创建好后，能直接获取文本的宽高等信息，避免了多次计算（调整 UILabel 大小时算一遍、UILabel 绘制时内部再算一遍）；CoreText 对象占用内存较少，可以缓存下来以备稍后多次渲染。"];
         content = [NSString stringWithFormat:@"https://www.sina.com.cn%@",content];
         [dic setValue:content forKey:@"content"];
 
