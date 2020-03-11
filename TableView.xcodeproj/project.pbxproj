@@ -722,14 +722,14 @@
 			isa = PBXGroup;
 			children = (
 				BBB7BE6224189DD800347814 /* Md5 */,
-				BBB7BE6724189DD800347814 /* UIImage+QACutImage.m */,
-				BBB7BE6824189DD800347814 /* UIImage+DecodeImage.h */,
-				BBB7BE6924189DD800347814 /* NSString+QAReplace.h */,
 				BBB7BE6A24189DD800347814 /* NSMutableAttributedString+QAAttributedString.h */,
+				BBB7BE6E24189DD800347814 /* NSMutableAttributedString+QAAttributedString.m */,
+				BBB7BE6924189DD800347814 /* NSString+QAReplace.h */,
 				BBB7BE6B24189DD800347814 /* NSString+QAReplace.m */,
+				BBB7BE6824189DD800347814 /* UIImage+DecodeImage.h */,
 				BBB7BE6C24189DD800347814 /* UIImage+DecodeImage.m */,
 				BBB7BE6D24189DD800347814 /* UIImage+QACutImage.h */,
-				BBB7BE6E24189DD800347814 /* NSMutableAttributedString+QAAttributedString.m */,
+				BBB7BE6724189DD800347814 /* UIImage+QACutImage.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
