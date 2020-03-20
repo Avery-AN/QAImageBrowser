@@ -102,12 +102,6 @@
 		BBB7BEBA24189DD800347814 /* QARichTextLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BE8D24189DD800347814 /* QARichTextLayer.m */; };
 		BBB7BEBB24189DD800347814 /* QARichTextLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BE8E24189DD800347814 /* QARichTextLabel.m */; };
 		BBB7BEBC24189DD800347814 /* QARichTextDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BE8F24189DD800347814 /* QARichTextDraw.m */; };
-		BBB7BEBD24189DD800347814 /* NSData+Md5.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BE9724189DD800347814 /* NSData+Md5.m */; };
-		BBB7BEBE24189DD800347814 /* NSString+Md5.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BE9A24189DD800347814 /* NSString+Md5.m */; };
-		BBB7BEBF24189DD800347814 /* QAFastImageDiskCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BE9B24189DD800347814 /* QAFastImageDiskCache.m */; };
-		BBB7BEC024189DD800347814 /* QAImageFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BE9C24189DD800347814 /* QAImageFormat.m */; };
-		BBB7BEC124189DD800347814 /* QAImageCachePath.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BE9E24189DD800347814 /* QAImageCachePath.m */; };
-		BBB7BEC224189DD800347814 /* QAImageFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BEA024189DD800347814 /* QAImageFileManager.m */; };
 		BBB7BEC524189E8B00347814 /* TrapezoidalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BEC324189E8B00347814 /* TrapezoidalCell.m */; };
 		BBCD5DC123A50CBA00950B71 /* 9.JPG in Resources */ = {isa = PBXBuildFile; fileRef = BBCD5DB723A50CBA00950B71 /* 9.JPG */; };
 		BBCD5DC223A50CBA00950B71 /* 8.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = BBCD5DB823A50CBA00950B71 /* 8.jpeg */; };
@@ -313,19 +307,6 @@
 		BBB7BE9124189DD800347814 /* QARichTextLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QARichTextLabel.h; sourceTree = "<group>"; };
 		BBB7BE9224189DD800347814 /* QARichTextDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QARichTextDraw.h; sourceTree = "<group>"; };
 		BBB7BE9424189DD800347814 /* QAAttributedLabelConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QAAttributedLabelConfig.h; sourceTree = "<group>"; };
-		BBB7BE9724189DD800347814 /* NSData+Md5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Md5.m"; sourceTree = "<group>"; };
-		BBB7BE9824189DD800347814 /* NSString+Md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Md5.h"; sourceTree = "<group>"; };
-		BBB7BE9924189DD800347814 /* NSData+Md5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Md5.h"; sourceTree = "<group>"; };
-		BBB7BE9A24189DD800347814 /* NSString+Md5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Md5.m"; sourceTree = "<group>"; };
-		BBB7BE9B24189DD800347814 /* QAFastImageDiskCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QAFastImageDiskCache.m; sourceTree = "<group>"; };
-		BBB7BE9C24189DD800347814 /* QAImageFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QAImageFormat.m; sourceTree = "<group>"; };
-		BBB7BE9D24189DD800347814 /* QAImageFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QAImageFileManager.h; sourceTree = "<group>"; };
-		BBB7BE9E24189DD800347814 /* QAImageCachePath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QAImageCachePath.m; sourceTree = "<group>"; };
-		BBB7BE9F24189DD800347814 /* QAFastImageDiskCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QAFastImageDiskCache.h; sourceTree = "<group>"; };
-		BBB7BEA024189DD800347814 /* QAImageFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QAImageFileManager.m; sourceTree = "<group>"; };
-		BBB7BEA124189DD800347814 /* QAImageFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QAImageFormat.h; sourceTree = "<group>"; };
-		BBB7BEA224189DD800347814 /* QAImageCachePath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QAImageCachePath.h; sourceTree = "<group>"; };
-		BBB7BEA324189DD800347814 /* QAFastImageDiskCacheConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QAFastImageDiskCacheConfig.h; sourceTree = "<group>"; };
 		BBB7BEC324189E8B00347814 /* TrapezoidalCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrapezoidalCell.m; sourceTree = "<group>"; };
 		BBB7BEC424189E8B00347814 /* TrapezoidalCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrapezoidalCell.h; sourceTree = "<group>"; };
 		BBCD5DB723A50CBA00950B71 /* 9.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 9.JPG; sourceTree = "<group>"; };
@@ -686,7 +667,6 @@
 			children = (
 				BBB7BE9424189DD800347814 /* QAAttributedLabelConfig.h */,
 				BBB7BE5D24189DD800347814 /* BaseClasses */,
-				BBB7BE9524189DD800347814 /* MmapClasses */,
 				BBB7BE8C24189DD800347814 /* QARichTextLabel */,
 				BBB7BE8524189DD800347814 /* TrapezoidalLabel */,
 			);
@@ -798,34 +778,6 @@
 				BBB7BE8D24189DD800347814 /* QARichTextLayer.m */,
 			);
 			path = QARichTextLabel;
-			sourceTree = "<group>";
-		};
-		BBB7BE9524189DD800347814 /* MmapClasses */ = {
-			isa = PBXGroup;
-			children = (
-				BBB7BE9624189DD800347814 /* Md5 */,
-				BBB7BE9F24189DD800347814 /* QAFastImageDiskCache.h */,
-				BBB7BE9B24189DD800347814 /* QAFastImageDiskCache.m */,
-				BBB7BEA324189DD800347814 /* QAFastImageDiskCacheConfig.h */,
-				BBB7BEA224189DD800347814 /* QAImageCachePath.h */,
-				BBB7BE9E24189DD800347814 /* QAImageCachePath.m */,
-				BBB7BE9D24189DD800347814 /* QAImageFileManager.h */,
-				BBB7BEA024189DD800347814 /* QAImageFileManager.m */,
-				BBB7BEA124189DD800347814 /* QAImageFormat.h */,
-				BBB7BE9C24189DD800347814 /* QAImageFormat.m */,
-			);
-			path = MmapClasses;
-			sourceTree = "<group>";
-		};
-		BBB7BE9624189DD800347814 /* Md5 */ = {
-			isa = PBXGroup;
-			children = (
-				BBB7BE9724189DD800347814 /* NSData+Md5.m */,
-				BBB7BE9824189DD800347814 /* NSString+Md5.h */,
-				BBB7BE9924189DD800347814 /* NSData+Md5.h */,
-				BBB7BE9A24189DD800347814 /* NSString+Md5.m */,
-			);
-			path = Md5;
 			sourceTree = "<group>";
 		};
 		BBCD5DB623A50CBA00950B71 /* CellImages */ = {
@@ -960,7 +912,6 @@
 				BBB7BEB924189DD800347814 /* QATrapezoidalLayer.m in Sources */,
 				BBB7BEA824189DD800347814 /* NSString+Md5.m in Sources */,
 				BBB7BEAF24189DD800347814 /* QAAttributedLabel.m in Sources */,
-				BBB7BEBD24189DD800347814 /* NSData+Md5.m in Sources */,
 				BBB7BE3924189DA500347814 /* MASConstraintMaker.m in Sources */,
 				BBB7BE4924189DA500347814 /* SDWebImageCompat.m in Sources */,
 				BBB7BE4F24189DA500347814 /* SDWebImageDownloaderOperation.m in Sources */,
@@ -980,8 +931,6 @@
 				BB9F6C9223838BF300F05116 /* AdvancedViewController.m in Sources */,
 				BBB7BE5024189DA500347814 /* SDWebImageTransition.m in Sources */,
 				BBB7BE5624189DA500347814 /* SDImageCacheConfig.m in Sources */,
-				BBB7BEC024189DD800347814 /* QAImageFormat.m in Sources */,
-				BBB7BEC124189DD800347814 /* QAImageCachePath.m in Sources */,
 				BBB7BE3B24189DA500347814 /* NSArray+MASAdditions.m in Sources */,
 				BBB7BEB524189DD800347814 /* QATextTransaction.m in Sources */,
 				BBB7BE3E24189DA500347814 /* MASViewConstraint.m in Sources */,
@@ -995,7 +944,6 @@
 				BBB7BEAC24189DD800347814 /* NSMutableAttributedString+QAAttributedString.m in Sources */,
 				BBB7BE3724189DA500347814 /* ViewController+MASAdditions.m in Sources */,
 				BBB7BE3D24189DA500347814 /* MASConstraint.m in Sources */,
-				BBB7BEC224189DD800347814 /* QAImageFileManager.m in Sources */,
 				BBB7BEAA24189DD800347814 /* NSString+QAReplace.m in Sources */,
 				BB9F6C6D23838BEB00F05116 /* NSString+Additions.m in Sources */,
 				BBB7BE4224189DA500347814 /* SDWebImageFrame.m in Sources */,
@@ -1007,7 +955,6 @@
 				BBB7BE5724189DA500347814 /* UIView+WebCacheOperation.m in Sources */,
 				BBB7BEB024189DD800347814 /* QATextDraw.m in Sources */,
 				BBB7BE5524189DA500347814 /* UIImage+MemoryCacheCost.m in Sources */,
-				BBB7BEBF24189DD800347814 /* QAFastImageDiskCache.m in Sources */,
 				BB48B567239F431D005D53A3 /* QAImageBrowserCell.m in Sources */,
 				BB9F6C8223838BEB00F05116 /* ScratchablelatexCell.m in Sources */,
 				BB9F6C9123838BF300F05116 /* AdvancedCell+SelfManager.m in Sources */,
@@ -1018,7 +965,6 @@
 				BBB7BE4524189DA500347814 /* SDWebImageDownloader.m in Sources */,
 				BBB7BE5A24189DA500347814 /* UIButton+WebCache.m in Sources */,
 				BBB7BEA724189DD800347814 /* NSData+Md5.m in Sources */,
-				BBB7BEBE24189DD800347814 /* NSString+Md5.m in Sources */,
 				BBB7BE4D24189DA500347814 /* SDAnimatedImageRep.m in Sources */,
 				BB9F6C2323838B8E00F05116 /* RootViewController.m in Sources */,
 				BBB7BE4024189DA500347814 /* SDWebImageManager.m in Sources */,
