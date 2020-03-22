@@ -1,16 +1,16 @@
 //
-//  AdvancedCell+SelfManager.h
-//  TestProject
+//  TrapezoidalCell+SelfManager.h
+//  TableView
 //
-//  Created by Avery An on 2019/8/28.
-//  Copyright © 2019 Avery An. All rights reserved.
+//  Created by Avery An on 2020/3/21.
+//  Copyright © 2020 Avery. All rights reserved.
 //
 
-#import "AdvancedCell.h"
+#import "TrapezoidalCell.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface AdvancedCell (SelfManager) <QAAttributedLabelProperty>
+@interface TrapezoidalCell (SelfManager) <QAAttributedLabelProperty>
 
 - (void)getStyleWithQueue:(dispatch_queue_t)dispatchQueue
             dispatchGroup:(dispatch_group_t)dispatchGroup
