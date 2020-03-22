@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BB0455DA24277F44000F327B /* TrapezoidalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0455CD24277F44000F327B /* TrapezoidalCell.m */; };
+		BB0455DB24277F44000F327B /* TrapezoidalCell+SelfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0455CE24277F44000F327B /* TrapezoidalCell+SelfManager.m */; };
+		BB0455DC24277F44000F327B /* RichTextCell+SelfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0455CF24277F44000F327B /* RichTextCell+SelfManager.m */; };
+		BB0455DD24277F44000F327B /* RichTextDataGetterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0455D024277F44000F327B /* RichTextDataGetterManager.m */; };
+		BB0455DE24277F44000F327B /* RichTextCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0455D124277F44000F327B /* RichTextCell.m */; };
+		BB0455DF24277F44000F327B /* RichTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0455D424277F44000F327B /* RichTextViewController.m */; };
+		BB0455E024277F44000F327B /* RichTextDataProcessManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0455D824277F44000F327B /* RichTextDataProcessManager.m */; };
+		BB0455E324277F81000F327B /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0455E224277F81000F327B /* RootViewController.m */; };
 		BB2FF43623A738820033F1D6 /* QAImageBrowserDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2FF43523A738820033F1D6 /* QAImageBrowserDownloadManager.m */; };
 		BB48B567239F431D005D53A3 /* QAImageBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48B566239F431D005D53A3 /* QAImageBrowserCell.m */; };
 		BB48B56A239F434A005D53A3 /* QAImageBrowserLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48B569239F434A005D53A3 /* QAImageBrowserLayout.m */; };
@@ -14,9 +22,6 @@
 		BB58E08B238B7CD0005C4EA9 /* emoji偷笑@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB58E087238B7CD0005C4EA9 /* emoji偷笑@3x.png */; };
 		BB58E08C238B7CD0005C4EA9 /* nezha@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB58E088238B7CD0005C4EA9 /* nezha@2x.png */; };
 		BB58E08D238B7CD0005C4EA9 /* nezha@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB58E089238B7CD0005C4EA9 /* nezha@3x.png */; };
-		BB6C5F67242710E900A900E2 /* AdvancedDataGetterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6C5F65242710E900A900E2 /* AdvancedDataGetterManager.m */; };
-		BB6C5F68242710E900A900E2 /* AdvancedDataProcessManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6C5F66242710E900A900E2 /* AdvancedDataProcessManager.m */; };
-		BB6C5F6B242710F000A900E2 /* TrapezoidalCell+SelfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6C5F6A242710F000A900E2 /* TrapezoidalCell+SelfManager.m */; };
 		BB7BECCA2390E40C00688028 /* QAImageBrowserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB7BECC22390E40C00688028 /* QAImageBrowserManager.m */; };
 		BB7BECD723925B0000688028 /* 默认图@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB7BECD523925B0000688028 /* 默认图@3x.png */; };
 		BB7BECD823925B0000688028 /* 默认图@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BB7BECD623925B0000688028 /* 默认图@2x.png */; };
@@ -26,7 +31,6 @@
 		BB9F6C0A23838A7000F05116 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9F6C0923838A7000F05116 /* AppDelegate.m */; };
 		BB9F6C1523838A7200F05116 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BB9F6C1423838A7200F05116 /* Assets.xcassets */; };
 		BB9F6C1B23838A7200F05116 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9F6C1A23838A7200F05116 /* main.m */; };
-		BB9F6C2323838B8E00F05116 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9F6C2223838B8E00F05116 /* RootViewController.m */; };
 		BB9F6C6C23838BEB00F05116 /* UIColor+Color.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9F6C2523838BEA00F05116 /* UIColor+Color.m */; };
 		BB9F6C6D23838BEB00F05116 /* NSString+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9F6C2623838BEA00F05116 /* NSString+Additions.m */; };
 		BB9F6C6E23838BEB00F05116 /* UIImage+RoundedImage.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9F6C2723838BEA00F05116 /* UIImage+RoundedImage.m */; };
@@ -35,9 +39,6 @@
 		BB9F6C8123838BEB00F05116 /* ScratchablelatexCell+SelfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9F6C5723838BEB00F05116 /* ScratchablelatexCell+SelfManager.m */; };
 		BB9F6C8223838BEB00F05116 /* ScratchablelatexCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9F6C5923838BEB00F05116 /* ScratchablelatexCell.m */; };
 		BB9F6C8923838BEB00F05116 /* ScratchablelatexViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9F6C6A23838BEB00F05116 /* ScratchablelatexViewController.m */; };
-		BB9F6C9123838BF300F05116 /* AdvancedCell+SelfManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9F6C8B23838BF300F05116 /* AdvancedCell+SelfManager.m */; };
-		BB9F6C9223838BF300F05116 /* AdvancedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9F6C8F23838BF300F05116 /* AdvancedViewController.m */; };
-		BB9F6C9323838BF300F05116 /* AdvancedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB9F6C9023838BF300F05116 /* AdvancedCell.m */; };
 		BBB7BE3124189DA500347814 /* YYSpriteSheetImage.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BDD624189DA400347814 /* YYSpriteSheetImage.m */; };
 		BBB7BE3224189DA500347814 /* YYImage.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BDD824189DA400347814 /* YYImage.m */; };
 		BBB7BE3324189DA500347814 /* YYImageCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BDD924189DA400347814 /* YYImageCoder.m */; };
@@ -104,7 +105,6 @@
 		BBB7BEBA24189DD800347814 /* QARichTextLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BE8D24189DD800347814 /* QARichTextLayer.m */; };
 		BBB7BEBB24189DD800347814 /* QARichTextLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BE8E24189DD800347814 /* QARichTextLabel.m */; };
 		BBB7BEBC24189DD800347814 /* QARichTextDraw.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BE8F24189DD800347814 /* QARichTextDraw.m */; };
-		BBB7BEC524189E8B00347814 /* TrapezoidalCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BBB7BEC324189E8B00347814 /* TrapezoidalCell.m */; };
 		BBCD5DC123A50CBA00950B71 /* 9.JPG in Resources */ = {isa = PBXBuildFile; fileRef = BBCD5DB723A50CBA00950B71 /* 9.JPG */; };
 		BBCD5DC223A50CBA00950B71 /* 8.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = BBCD5DB823A50CBA00950B71 /* 8.jpeg */; };
 		BBCD5DC323A50CBA00950B71 /* 4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BBCD5DB923A50CBA00950B71 /* 4.jpg */; };
@@ -119,6 +119,22 @@
 
 /* Begin PBXFileReference section */
 		175F2055E5583335E94BE624 /* Pods_TableView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TableView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB0455CC24277F44000F327B /* RichTextViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RichTextViewController.h; sourceTree = "<group>"; };
+		BB0455CD24277F44000F327B /* TrapezoidalCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrapezoidalCell.m; sourceTree = "<group>"; };
+		BB0455CE24277F44000F327B /* TrapezoidalCell+SelfManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TrapezoidalCell+SelfManager.m"; sourceTree = "<group>"; };
+		BB0455CF24277F44000F327B /* RichTextCell+SelfManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RichTextCell+SelfManager.m"; sourceTree = "<group>"; };
+		BB0455D024277F44000F327B /* RichTextDataGetterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RichTextDataGetterManager.m; sourceTree = "<group>"; };
+		BB0455D124277F44000F327B /* RichTextCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RichTextCell.m; sourceTree = "<group>"; };
+		BB0455D224277F44000F327B /* RichTextDataProcessManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RichTextDataProcessManager.h; sourceTree = "<group>"; };
+		BB0455D324277F44000F327B /* TrapezoidalCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrapezoidalCell.h; sourceTree = "<group>"; };
+		BB0455D424277F44000F327B /* RichTextViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RichTextViewController.m; sourceTree = "<group>"; };
+		BB0455D524277F44000F327B /* RichTextDataGetterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RichTextDataGetterManager.h; sourceTree = "<group>"; };
+		BB0455D624277F44000F327B /* RichTextCell+SelfManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RichTextCell+SelfManager.h"; sourceTree = "<group>"; };
+		BB0455D724277F44000F327B /* TrapezoidalCell+SelfManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TrapezoidalCell+SelfManager.h"; sourceTree = "<group>"; };
+		BB0455D824277F44000F327B /* RichTextDataProcessManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RichTextDataProcessManager.m; sourceTree = "<group>"; };
+		BB0455D924277F44000F327B /* RichTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RichTextCell.h; sourceTree = "<group>"; };
+		BB0455E124277F81000F327B /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
+		BB0455E224277F81000F327B /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		BB2FF43423A738820033F1D6 /* QAImageBrowserDownloadManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QAImageBrowserDownloadManager.h; sourceTree = "<group>"; };
 		BB2FF43523A738820033F1D6 /* QAImageBrowserDownloadManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QAImageBrowserDownloadManager.m; sourceTree = "<group>"; };
 		BB48B565239F431D005D53A3 /* QAImageBrowserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QAImageBrowserCell.h; sourceTree = "<group>"; };
@@ -129,12 +145,6 @@
 		BB58E087238B7CD0005C4EA9 /* emoji偷笑@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "emoji偷笑@3x.png"; sourceTree = "<group>"; };
 		BB58E088238B7CD0005C4EA9 /* nezha@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nezha@2x.png"; sourceTree = "<group>"; };
 		BB58E089238B7CD0005C4EA9 /* nezha@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "nezha@3x.png"; sourceTree = "<group>"; };
-		BB6C5F63242710E900A900E2 /* AdvancedDataGetterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvancedDataGetterManager.h; sourceTree = "<group>"; };
-		BB6C5F64242710E900A900E2 /* AdvancedDataProcessManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvancedDataProcessManager.h; sourceTree = "<group>"; };
-		BB6C5F65242710E900A900E2 /* AdvancedDataGetterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvancedDataGetterManager.m; sourceTree = "<group>"; };
-		BB6C5F66242710E900A900E2 /* AdvancedDataProcessManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvancedDataProcessManager.m; sourceTree = "<group>"; };
-		BB6C5F69242710F000A900E2 /* TrapezoidalCell+SelfManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TrapezoidalCell+SelfManager.h"; sourceTree = "<group>"; };
-		BB6C5F6A242710F000A900E2 /* TrapezoidalCell+SelfManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "TrapezoidalCell+SelfManager.m"; sourceTree = "<group>"; };
 		BB7BECC22390E40C00688028 /* QAImageBrowserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QAImageBrowserManager.m; sourceTree = "<group>"; };
 		BB7BECC32390E40C00688028 /* QAImageBrowserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QAImageBrowserManager.h; sourceTree = "<group>"; };
 		BB7BECD523925B0000688028 /* 默认图@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "默认图@3x.png"; sourceTree = "<group>"; };
@@ -151,8 +161,6 @@
 		BB9F6C1423838A7200F05116 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BB9F6C1923838A7200F05116 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BB9F6C1A23838A7200F05116 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BB9F6C2123838B8E00F05116 /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
-		BB9F6C2223838B8E00F05116 /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		BB9F6C2523838BEA00F05116 /* UIColor+Color.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+Color.m"; sourceTree = "<group>"; };
 		BB9F6C2623838BEA00F05116 /* NSString+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Additions.m"; sourceTree = "<group>"; };
 		BB9F6C2723838BEA00F05116 /* UIImage+RoundedImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+RoundedImage.m"; sourceTree = "<group>"; };
@@ -169,12 +177,6 @@
 		BB9F6C6923838BEB00F05116 /* ScratchablelatexCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScratchablelatexCell.h; sourceTree = "<group>"; };
 		BB9F6C6A23838BEB00F05116 /* ScratchablelatexViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScratchablelatexViewController.m; sourceTree = "<group>"; };
 		BB9F6C6B23838BEB00F05116 /* ScratchablelatexCell+SelfManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ScratchablelatexCell+SelfManager.h"; sourceTree = "<group>"; };
-		BB9F6C8B23838BF300F05116 /* AdvancedCell+SelfManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "AdvancedCell+SelfManager.m"; sourceTree = "<group>"; };
-		BB9F6C8C23838BF300F05116 /* AdvancedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvancedCell.h; sourceTree = "<group>"; };
-		BB9F6C8D23838BF300F05116 /* AdvancedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvancedViewController.h; sourceTree = "<group>"; };
-		BB9F6C8E23838BF300F05116 /* AdvancedCell+SelfManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AdvancedCell+SelfManager.h"; sourceTree = "<group>"; };
-		BB9F6C8F23838BF300F05116 /* AdvancedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvancedViewController.m; sourceTree = "<group>"; };
-		BB9F6C9023838BF300F05116 /* AdvancedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvancedCell.m; sourceTree = "<group>"; };
 		BB9F6C9423838DFF00F05116 /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		BBB7BDD324189DA400347814 /* YYImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYImage.h; sourceTree = "<group>"; };
 		BBB7BDD424189DA400347814 /* YYImageCoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YYImageCoder.h; sourceTree = "<group>"; };
@@ -313,8 +315,6 @@
 		BBB7BE9124189DD800347814 /* QARichTextLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QARichTextLabel.h; sourceTree = "<group>"; };
 		BBB7BE9224189DD800347814 /* QARichTextDraw.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QARichTextDraw.h; sourceTree = "<group>"; };
 		BBB7BE9424189DD800347814 /* QAAttributedLabelConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QAAttributedLabelConfig.h; sourceTree = "<group>"; };
-		BBB7BEC324189E8B00347814 /* TrapezoidalCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TrapezoidalCell.m; sourceTree = "<group>"; };
-		BBB7BEC424189E8B00347814 /* TrapezoidalCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrapezoidalCell.h; sourceTree = "<group>"; };
 		BBCD5DB723A50CBA00950B71 /* 9.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 9.JPG; sourceTree = "<group>"; };
 		BBCD5DB823A50CBA00950B71 /* 8.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 8.jpeg; sourceTree = "<group>"; };
 		BBCD5DB923A50CBA00950B71 /* 4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 4.jpg; sourceTree = "<group>"; };
@@ -344,6 +344,27 @@
 				175F2055E5583335E94BE624 /* Pods_TableView.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BB0455CB24277F44000F327B /* RichTextsTable */ = {
+			isa = PBXGroup;
+			children = (
+				BB0455CC24277F44000F327B /* RichTextViewController.h */,
+				BB0455D424277F44000F327B /* RichTextViewController.m */,
+				BB0455D524277F44000F327B /* RichTextDataGetterManager.h */,
+				BB0455D024277F44000F327B /* RichTextDataGetterManager.m */,
+				BB0455D224277F44000F327B /* RichTextDataProcessManager.h */,
+				BB0455D824277F44000F327B /* RichTextDataProcessManager.m */,
+				BB0455D924277F44000F327B /* RichTextCell.h */,
+				BB0455D124277F44000F327B /* RichTextCell.m */,
+				BB0455D624277F44000F327B /* RichTextCell+SelfManager.h */,
+				BB0455CF24277F44000F327B /* RichTextCell+SelfManager.m */,
+				BB0455D324277F44000F327B /* TrapezoidalCell.h */,
+				BB0455CD24277F44000F327B /* TrapezoidalCell.m */,
+				BB0455D724277F44000F327B /* TrapezoidalCell+SelfManager.h */,
+				BB0455CE24277F44000F327B /* TrapezoidalCell+SelfManager.m */,
+			);
+			path = RichTextsTable;
 			sourceTree = "<group>";
 		};
 		BB0666FC238396CE0086CF6F /* Resources */ = {
@@ -441,10 +462,10 @@
 			children = (
 				BB9F6C0823838A7000F05116 /* AppDelegate.h */,
 				BB9F6C0923838A7000F05116 /* AppDelegate.m */,
-				BB9F6C2123838B8E00F05116 /* RootViewController.h */,
-				BB9F6C2223838B8E00F05116 /* RootViewController.m */,
+				BB0455E124277F81000F327B /* RootViewController.h */,
+				BB0455E224277F81000F327B /* RootViewController.m */,
 				BB9F6C2D23838BEA00F05116 /* BaseControls */,
-				BB9F6C8A23838BF300F05116 /* AdvancedTableView */,
+				BB0455CB24277F44000F327B /* RichTextsTable */,
 				BB9F6C5623838BEB00F05116 /* 九宫格 */,
 				BB9F6C2423838BEA00F05116 /* Category */,
 				BB0666FC238396CE0086CF6F /* Resources */,
@@ -504,27 +525,6 @@
 				BB9F6C5723838BEB00F05116 /* ScratchablelatexCell+SelfManager.m */,
 			);
 			path = "九宫格";
-			sourceTree = "<group>";
-		};
-		BB9F6C8A23838BF300F05116 /* AdvancedTableView */ = {
-			isa = PBXGroup;
-			children = (
-				BB9F6C8D23838BF300F05116 /* AdvancedViewController.h */,
-				BB9F6C8F23838BF300F05116 /* AdvancedViewController.m */,
-				BB6C5F63242710E900A900E2 /* AdvancedDataGetterManager.h */,
-				BB6C5F65242710E900A900E2 /* AdvancedDataGetterManager.m */,
-				BB6C5F64242710E900A900E2 /* AdvancedDataProcessManager.h */,
-				BB6C5F66242710E900A900E2 /* AdvancedDataProcessManager.m */,
-				BB9F6C8C23838BF300F05116 /* AdvancedCell.h */,
-				BB9F6C9023838BF300F05116 /* AdvancedCell.m */,
-				BB9F6C8E23838BF300F05116 /* AdvancedCell+SelfManager.h */,
-				BB9F6C8B23838BF300F05116 /* AdvancedCell+SelfManager.m */,
-				BBB7BEC424189E8B00347814 /* TrapezoidalCell.h */,
-				BBB7BEC324189E8B00347814 /* TrapezoidalCell.m */,
-				BB6C5F69242710F000A900E2 /* TrapezoidalCell+SelfManager.h */,
-				BB6C5F6A242710F000A900E2 /* TrapezoidalCell+SelfManager.m */,
-			);
-			path = AdvancedTableView;
 			sourceTree = "<group>";
 		};
 		BBB7BDD024189DA400347814 /* ThirdParty */ = {
@@ -895,23 +895,24 @@
 			buildActionMask = 2147483647;
 			files = (
 				BBB7BE5924189DA500347814 /* SDWebImageImageIOCoder.m in Sources */,
+				BB0455DA24277F44000F327B /* TrapezoidalCell.m in Sources */,
 				BBB7BE4624189DA500347814 /* UIImage+GIF.m in Sources */,
 				BBB7BE4A24189DA500347814 /* SDWebImagePrefetcher.m in Sources */,
 				BBB7BEA624189DD800347814 /* QAAttributedLayer.m in Sources */,
 				BBB7BE5824189DA500347814 /* UIView+WebCache.m in Sources */,
 				BB2FF43623A738820033F1D6 /* QAImageBrowserDownloadManager.m in Sources */,
 				BBB7BE3524189DA500347814 /* YYAnimatedImageView.m in Sources */,
-				BBB7BEC524189E8B00347814 /* TrapezoidalCell.m in Sources */,
 				BBB7BE4124189DA500347814 /* UIImageView+HighlightedWebCache.m in Sources */,
 				BBB7BEA924189DD800347814 /* UIImage+QACutImage.m in Sources */,
-				BB6C5F67242710E900A900E2 /* AdvancedDataGetterManager.m in Sources */,
 				BBB7BEB224189DD800347814 /* QAEmojiTextManager.m in Sources */,
 				BBB7BE5324189DA500347814 /* NSImage+WebCache.m in Sources */,
 				BBB7BE4724189DA500347814 /* UIImage+MultiFormat.m in Sources */,
 				BB9F6C0A23838A7000F05116 /* AppDelegate.m in Sources */,
 				BBB7BE3824189DA500347814 /* MASCompositeConstraint.m in Sources */,
 				BBB7BE5424189DA500347814 /* SDWebImageGIFCoder.m in Sources */,
+				BB0455DC24277F44000F327B /* RichTextCell+SelfManager.m in Sources */,
 				BB48B56A239F434A005D53A3 /* QAImageBrowserLayout.m in Sources */,
+				BB0455E324277F81000F327B /* RootViewController.m in Sources */,
 				BBB7BEB824189DD800347814 /* QATrapezoidalLabel.m in Sources */,
 				BBB7BEB624189DD800347814 /* QAAttributedStringSizeMeasurement.m in Sources */,
 				BBB7BEBA24189DD800347814 /* QARichTextLayer.m in Sources */,
@@ -932,24 +933,23 @@
 				BB9F6C6C23838BEB00F05116 /* UIColor+Color.m in Sources */,
 				BBB7BE4B24189DA500347814 /* SDWebImageCoder.m in Sources */,
 				BBB7BEAB24189DD800347814 /* UIImage+DecodeImage.m in Sources */,
+				BB0455E024277F44000F327B /* RichTextDataProcessManager.m in Sources */,
 				BBB7BE3C24189DA500347814 /* View+MASAdditions.m in Sources */,
 				BBB7BE3F24189DA500347814 /* MASViewAttribute.m in Sources */,
-				BB9F6C9323838BF300F05116 /* AdvancedCell.m in Sources */,
 				BBB7BEBC24189DD800347814 /* QARichTextDraw.m in Sources */,
 				BBB7BE3324189DA500347814 /* YYImageCoder.m in Sources */,
 				BBB7BE5124189DA500347814 /* NSData+ImageContentType.m in Sources */,
 				BB7BECEA2395022D00688028 /* QAImageProcesser.m in Sources */,
-				BB9F6C9223838BF300F05116 /* AdvancedViewController.m in Sources */,
 				BBB7BE5024189DA500347814 /* SDWebImageTransition.m in Sources */,
 				BBB7BE5624189DA500347814 /* SDImageCacheConfig.m in Sources */,
 				BBB7BE3B24189DA500347814 /* NSArray+MASAdditions.m in Sources */,
 				BBB7BEB524189DD800347814 /* QATextTransaction.m in Sources */,
 				BBB7BE3E24189DA500347814 /* MASViewConstraint.m in Sources */,
 				BB9F6C8923838BEB00F05116 /* ScratchablelatexViewController.m in Sources */,
+				BB0455DF24277F44000F327B /* RichTextViewController.m in Sources */,
 				BBB7BE4324189DA500347814 /* UIImage+ForceDecode.m in Sources */,
 				BBB7BEA524189DD800347814 /* QATextRunDelegate.m in Sources */,
 				BB9F6C1B23838A7200F05116 /* main.m in Sources */,
-				BB6C5F6B242710F000A900E2 /* TrapezoidalCell+SelfManager.m in Sources */,
 				BBB7BE4424189DA500347814 /* SDWebImageCodersManager.m in Sources */,
 				BBB7BE3224189DA500347814 /* YYImage.m in Sources */,
 				BBB7BE4824189DA500347814 /* SDWebImageCoderHelper.m in Sources */,
@@ -957,19 +957,20 @@
 				BBB7BE3724189DA500347814 /* ViewController+MASAdditions.m in Sources */,
 				BBB7BE3D24189DA500347814 /* MASConstraint.m in Sources */,
 				BBB7BEAA24189DD800347814 /* NSString+QAReplace.m in Sources */,
+				BB0455DE24277F44000F327B /* RichTextCell.m in Sources */,
 				BB9F6C6D23838BEB00F05116 /* NSString+Additions.m in Sources */,
 				BBB7BE4224189DA500347814 /* SDWebImageFrame.m in Sources */,
+				BB0455DD24277F44000F327B /* RichTextDataGetterManager.m in Sources */,
 				BBB7BEB324189DD800347814 /* QABackgroundDraw.m in Sources */,
 				BB9F6C8123838BEB00F05116 /* ScratchablelatexCell+SelfManager.m in Sources */,
 				BBB7BE4E24189DA500347814 /* SDImageCache.m in Sources */,
-				BB6C5F68242710E900A900E2 /* AdvancedDataProcessManager.m in Sources */,
 				BBB7BEB724189DD800347814 /* QATrapezoidalDraw.m in Sources */,
 				BBB7BE5724189DA500347814 /* UIView+WebCacheOperation.m in Sources */,
 				BBB7BEB024189DD800347814 /* QATextDraw.m in Sources */,
 				BBB7BE5524189DA500347814 /* UIImage+MemoryCacheCost.m in Sources */,
+				BB0455DB24277F44000F327B /* TrapezoidalCell+SelfManager.m in Sources */,
 				BB48B567239F431D005D53A3 /* QAImageBrowserCell.m in Sources */,
 				BB9F6C8223838BEB00F05116 /* ScratchablelatexCell.m in Sources */,
-				BB9F6C9123838BF300F05116 /* AdvancedCell+SelfManager.m in Sources */,
 				BBB7BE3624189DA500347814 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				BBB7BEBB24189DD800347814 /* QARichTextLabel.m in Sources */,
 				BBB7BE3124189DA500347814 /* YYSpriteSheetImage.m in Sources */,
@@ -978,7 +979,6 @@
 				BBB7BE5A24189DA500347814 /* UIButton+WebCache.m in Sources */,
 				BBB7BEA724189DD800347814 /* NSData+Md5.m in Sources */,
 				BBB7BE4D24189DA500347814 /* SDAnimatedImageRep.m in Sources */,
-				BB9F6C2323838B8E00F05116 /* RootViewController.m in Sources */,
 				BBB7BE4024189DA500347814 /* SDWebImageManager.m in Sources */,
 				BB9F6C8023838BEB00F05116 /* BaseCell.m in Sources */,
 				BB9F6C6E23838BEB00F05116 /* UIImage+RoundedImage.m in Sources */,
