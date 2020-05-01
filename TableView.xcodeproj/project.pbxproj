@@ -15,6 +15,7 @@
 		BB0455DF24277F44000F327B /* RichTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0455D424277F44000F327B /* RichTextViewController.m */; };
 		BB0455E024277F44000F327B /* RichTextDataProcessManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0455D824277F44000F327B /* RichTextDataProcessManager.m */; };
 		BB0455E324277F81000F327B /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB0455E224277F81000F327B /* RootViewController.m */; };
+		BB172C9A245C032E00240394 /* QAImageBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BB172C98245C032E00240394 /* QAImageBrowserViewController.m */; };
 		BB2FF43623A738820033F1D6 /* QAImageBrowserDownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = BB2FF43523A738820033F1D6 /* QAImageBrowserDownloadManager.m */; };
 		BB48B567239F431D005D53A3 /* QAImageBrowserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48B566239F431D005D53A3 /* QAImageBrowserCell.m */; };
 		BB48B56A239F434A005D53A3 /* QAImageBrowserLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = BB48B569239F434A005D53A3 /* QAImageBrowserLayout.m */; };
@@ -135,6 +136,8 @@
 		BB0455D924277F44000F327B /* RichTextCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RichTextCell.h; sourceTree = "<group>"; };
 		BB0455E124277F81000F327B /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		BB0455E224277F81000F327B /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		BB172C98245C032E00240394 /* QAImageBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QAImageBrowserViewController.m; sourceTree = "<group>"; };
+		BB172C99245C032E00240394 /* QAImageBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QAImageBrowserViewController.h; sourceTree = "<group>"; };
 		BB2FF43423A738820033F1D6 /* QAImageBrowserDownloadManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QAImageBrowserDownloadManager.h; sourceTree = "<group>"; };
 		BB2FF43523A738820033F1D6 /* QAImageBrowserDownloadManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QAImageBrowserDownloadManager.m; sourceTree = "<group>"; };
 		BB48B565239F431D005D53A3 /* QAImageBrowserCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = QAImageBrowserCell.h; sourceTree = "<group>"; };
@@ -377,6 +380,15 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		BB172C97245C032E00240394 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				BB172C99245C032E00240394 /* QAImageBrowserViewController.h */,
+				BB172C98245C032E00240394 /* QAImageBrowserViewController.m */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
 		BB48B55E239F429B005D53A3 /* CollectionView */ = {
 			isa = PBXGroup;
 			children = (
@@ -404,6 +416,7 @@
 			children = (
 				BB97A75D23A5E2A900A3BA7A /* QAImageBrowserManagerConfig.h */,
 				BB7BECC12390E40C00688028 /* Manager */,
+				BB172C97245C032E00240394 /* ViewControllers */,
 				BB7BECC72390E40C00688028 /* Views */,
 				BB7BECD423925B0000688028 /* Resources */,
 			);
@@ -932,6 +945,7 @@
 				BBB7BEB424189DD800347814 /* QATextLayout.m in Sources */,
 				BB9F6C6C23838BEB00F05116 /* UIColor+Color.m in Sources */,
 				BBB7BE4B24189DA500347814 /* SDWebImageCoder.m in Sources */,
+				BB172C9A245C032E00240394 /* QAImageBrowserViewController.m in Sources */,
 				BBB7BEAB24189DD800347814 /* UIImage+DecodeImage.m in Sources */,
 				BB0455E024277F44000F327B /* RichTextDataProcessManager.m in Sources */,
 				BBB7BE3C24189DA500347814 /* View+MASAdditions.m in Sources */,
