@@ -2,9 +2,9 @@
 图片浏览器<br>
 =========
  <br>
+【使用YYAnimatedImageView主要是用于显示gif】 <br>
 【iOS14以后的版本注意处理一下YYAnimatedImageView中的bug】 <br>
 【iOS14以后，YYAnimatedImageView加载图片有些问题】 <br>
-【iOS14以后，可以添加一个类似于YYAnimatedImageView+ImageShow的分类】 <br>
 
 主要功能点:<br>
 --------------
