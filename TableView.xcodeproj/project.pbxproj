@@ -116,6 +116,7 @@
 		BBCD5DC823A50CBA00950B71 /* 3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BBCD5DBE23A50CBA00950B71 /* 3.jpg */; };
 		BBCD5DC923A50CBA00950B71 /* 1.JPG in Resources */ = {isa = PBXBuildFile; fileRef = BBCD5DBF23A50CBA00950B71 /* 1.JPG */; };
 		BBCD5DCA23A50CBA00950B71 /* 0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BBCD5DC023A50CBA00950B71 /* 0.jpg */; };
+		F8A4D4B727AF6AED003766A2 /* YYAnimatedImageView+ImageShow.m in Sources */ = {isa = PBXBuildFile; fileRef = F8A4D4B527AF6AED003766A2 /* YYAnimatedImageView+ImageShow.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -328,6 +329,8 @@
 		BBCD5DBE23A50CBA00950B71 /* 3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 3.jpg; sourceTree = "<group>"; };
 		BBCD5DBF23A50CBA00950B71 /* 1.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 1.JPG; sourceTree = "<group>"; };
 		BBCD5DC023A50CBA00950B71 /* 0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = 0.jpg; sourceTree = "<group>"; };
+		F8A4D4B527AF6AED003766A2 /* YYAnimatedImageView+ImageShow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "YYAnimatedImageView+ImageShow.m"; sourceTree = "<group>"; };
+		F8A4D4B627AF6AED003766A2 /* YYAnimatedImageView+ImageShow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "YYAnimatedImageView+ImageShow.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -502,6 +505,8 @@
 				BB9F6C2723838BEA00F05116 /* UIImage+RoundedImage.m */,
 				BB9F6C2B23838BEA00F05116 /* UIImage+ClipsToBounds.h */,
 				BB9F6C2823838BEA00F05116 /* UIImage+ClipsToBounds.m */,
+				F8A4D4B627AF6AED003766A2 /* YYAnimatedImageView+ImageShow.h */,
+				F8A4D4B527AF6AED003766A2 /* YYAnimatedImageView+ImageShow.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -983,6 +988,7 @@
 				BBB7BEB024189DD800347814 /* QATextDraw.m in Sources */,
 				BBB7BE5524189DA500347814 /* UIImage+MemoryCacheCost.m in Sources */,
 				BB0455DB24277F44000F327B /* TrapezoidalCell+SelfManager.m in Sources */,
+				F8A4D4B727AF6AED003766A2 /* YYAnimatedImageView+ImageShow.m in Sources */,
 				BB48B567239F431D005D53A3 /* QAImageBrowserCell.m in Sources */,
 				BB9F6C8223838BEB00F05116 /* ScratchablelatexCell.m in Sources */,
 				BBB7BE3624189DA500347814 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
