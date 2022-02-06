@@ -1,5 +1,4 @@
-# QAImageBrowser
-图片浏览器<br>
+# QAImageBrowser   图片浏览器<br>
 =========
  <br>
 【使用YYAnimatedImageView主要是用于显示gif】 <br>
