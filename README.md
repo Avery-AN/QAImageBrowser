@@ -1,5 +1,4 @@
 # QAImageBrowser   图片浏览器<br>
-=========
  <br>
 【使用YYAnimatedImageView主要是用于显示gif】 <br>
 【iOS14以后的版本注意处理一下YYAnimatedImageView中的bug】 <br>
